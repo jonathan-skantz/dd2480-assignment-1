@@ -7,3 +7,9 @@ public class Decide {
         return LAUNCH;
     }
 }
+
+enum Connector {
+    ANDD,
+    ORR,
+    NOTUSED
+}
