@@ -1,5 +1,5 @@
 public class Decide {
-    public String DECIDE() {
+    public String DECIDE(int NUMPOINTS, double[] POINTS, Parameters PARAMETERS, Connector[][] LCM, boolean[] PUV) {
         String LAUNCH = "NO";
 
         // Calculations ...
