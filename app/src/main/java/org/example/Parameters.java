@@ -1,3 +1,4 @@
+package org.example;
 public class Parameters {
     public static final double PI = 3.1415926535;
 
