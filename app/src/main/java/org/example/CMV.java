@@ -15,7 +15,7 @@ public class CMV {
         cmv[6] = lic6();
         cmv[7] = lic7();
         cmv[8] = lic8();
-        cmv[9] = lic9(points, parameters);
+        cmv[9] = lic9(points, parameters.C_PTS, parameters.D_PTS, parameters.EPSILON);
         cmv[10] = lic10();
         cmv[11] = lic11();
         cmv[12] = lic12();
@@ -38,17 +38,19 @@ public class CMV {
     /**
      * LIC 9: Angle < (PI - EPSILON) or > (PI + EPSILON) for 3 points separated by C_PTS, D_PTS
      * @param points Input points (≥5 points required)
-     * @param parameters Input parameters
+     * @param C_PTS Input parameter
+     * @param D_PTS Input parameter
+     * @param EPSILON Input parameter
      * @return true if condition is met
      */
-    public static Boolean lic9(Point[] points, Parameters parameters) {
+    public static Boolean lic9(Point[] points, int C_PTS, int D_PTS, double EPSILON) {
         int i = 0;
         if(points.length < 5) return false;
 
         for (Point A : points) {
-            if(i + parameters.C_PTS + parameters.D_PTS + 2 < points.length) {
-                Point B = points[i + parameters.C_PTS + 1];
-                Point C = points[i + parameters.C_PTS + parameters.D_PTS + 2];
+            if(i + C_PTS + D_PTS + 2 < points.length) {
+                Point B = points[i + C_PTS + 1];
+                Point C = points[i + C_PTS + D_PTS + 2];
 
                 if(!A.areTheSame(B) && !C.areTheSame(B)) {
 
@@ -68,7 +70,7 @@ public class CMV {
                         cosValue = Math.max(-1.0, Math.min(1.0, cosValue));
                         double angle = Math.acos(cosValue);
 
-                        if(angle < Parameters.PI - parameters.EPSILON || angle > Parameters.PI + parameters.EPSILON) {
+                        if(angle < Parameters.PI - EPSILON || angle > Parameters.PI + EPSILON) {
                             return true;
                         }
                     }
