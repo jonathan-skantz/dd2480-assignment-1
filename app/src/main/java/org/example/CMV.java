@@ -1,3 +1,6 @@
+package org.example;
+
+
 public class CMV {
 
     public static Boolean[] computeCMV(Point[] points, Parameters parameters) {
