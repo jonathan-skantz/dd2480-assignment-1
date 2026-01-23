@@ -1,5 +1,11 @@
 public class CMV {
 
+    /**
+     * Computes the Conditions Met Vector (CMV) - 15 booleans indicating if each LIC is met.
+     * @param points Radar data points
+     * @param parameters parameters
+     * @return cmv[i] = true if LIC i is satisfied
+     */
     public static Boolean[] computeCMV(Point[] points, Parameters parameters) {
         Boolean[] cmv = new Boolean[15];
 
