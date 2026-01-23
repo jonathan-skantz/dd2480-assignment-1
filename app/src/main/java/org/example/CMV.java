@@ -3,6 +3,12 @@ import java.util.Arrays;
 
 public class CMV {
 
+    /**
+     * Computes the Conditions Met Vector (CMV) - 15 booleans indicating if each LIC is met.
+     * @param points Radar data points
+     * @param parameters parameters
+     * @return cmv[i] = true if LIC i is satisfied
+     */
     public static boolean[] computeCMV(Point[] points, Parameters parameters) {
         boolean[] cmv = new boolean[15];
 
