@@ -1,5 +1,5 @@
 public class CMV {
-
+    
     public static Boolean[] computeCMV(Point[] points, Parameters parameters) {
         Boolean[] cmv = new Boolean[15];
 
@@ -32,6 +32,12 @@ public class CMV {
     public static Boolean lic7() {return false;}
     public static Boolean lic8() {return false;}
 
+    /**
+     * LIC 9: Angle < (PI - EPSILON) or > (PI + EPSILON) for 3 points separated by C_PTS, D_PTS
+     * @param points Input points (≥5 points required)
+     * @param parameters Input parameters
+     * @return true if condition is met
+     */
     public static Boolean lic9(Point[] points, Parameters parameters) {
         int i = 0;
         if(points.length < 5) return false;
