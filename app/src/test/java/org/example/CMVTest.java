@@ -8,7 +8,122 @@ class CMVTest {
     @Test 
     void initialTest() {
         assertTrue(true);
-    }        
+    }
+    
+    /**
+     * If {@code AREA1} is negative, lic3 should return false.
+     */
+    @Test
+    void lic3_negativeArea_returnsFalse() {
+
+        Point[] points = {
+            new Point(0, 0),
+            new Point(1, 0),
+            new Point(0, 1)
+        };
+
+        assertFalse(CMV.lic3(points, -1.0));
+    }
+
+    /**
+     * If less than three points in input, lic3 should return false.
+     */
+    @Test
+    void lic3_lessThanThreePoints_returnsFalse() {
+        Point[] points = {
+            new Point(0, 0),
+            new Point(1, 0)
+        };
+
+        assertFalse(CMV.lic3(points, 1));
+    }
+
+    /**
+     * If two points are the same, lic3 should return false.
+     */
+    @Test
+    void lic3_twoPointsAreTheSame_returnsFalse() {
+        Point[] points = {
+            new Point(0, 0),
+            new Point(0, 0),
+            new Point(1, 0)
+        };
+
+        assertFalse(CMV.lic3(points, 1));
+    }
+
+    /**
+     * If all points are on the same line, the area is zero and lic3 should return false.
+     */
+    @Test
+    void lic3_allPointsOnSameLine_returnsFalse() {
+        Point[] points = {
+            new Point(0, 0),
+            new Point(1, 1),
+            new Point(2, 2)
+        };
+
+        assertFalse(CMV.lic3(points, 1));
+    }
+
+    /**
+     * If area of triangle equal to {@code AREA1}, then the area isn't greater than {@code AREA1} and lic3 should fail.
+     */
+    @Test
+    void lic3_triangleAreaEqualToAREA1_returnsFalse() {
+        Point[] points = {
+            new Point(0, 0),
+            new Point(2, 0),
+            new Point(0, 1)
+        };
+
+        assertFalse(CMV.lic3(points, 1));
+    }
+
+    /**
+     * If three consecutive points form a triangle with and area larger than {@code AREA1}, lic3 should return true.
+     */
+    @Test
+    void lic3_trianglAreaGreaterThanAREA1_returnsTrue() {
+        Point[] points = {
+            new Point(0, 0),
+            new Point(4, 0),
+            new Point(0, 2)
+        };
+
+        assertTrue(CMV.lic3(points, 1));
+    }
+
+    /**
+     * If a triplet which satisfies the condition {@code area > AREA1} appears later in the point array, lic3 should return true.
+     */
+    @Test
+    void lic3_laterTripletSatisfiesCondition_returnsTrue() {
+        Point[] points = {
+            new Point(0, 0),
+            new Point(1, 1),
+            new Point(2, 2), // First set are on the same line, thus area = 0
+            new Point(2, 1)  // Second set forms triangle of area 0.5
+        };
+
+        assertTrue(CMV.lic3(points, 0.1));
+    }
+
+    /**
+     * If multiple triangles can be formed out of the points but none satisfy the condition {@code area > AREA1}, lic3 should return false.
+     */
+    @Test
+    void lic3_noTriangleWithAreaLargerThanAREA1Exists_returnsFalse() {
+        Point[] points = {
+            new Point(0, 0),
+            new Point(1, 1),
+            new Point(1, 0),   // area = 0.5
+            new Point(3, 0),   // area = 1
+            new Point(3, 0.5)  // area = 0.5
+        };
+
+        assertFalse(CMV.lic3(points, 1));
+    }
 
     /**
      * If {@code Q_PTS} is less than 2, lic4 should return false.
