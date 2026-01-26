@@ -17,7 +17,7 @@ public class CMV {
         cmv[8] = lic8();
         cmv[9] = lic9();
         cmv[10] = lic10();
-        cmv[11] = lic11();
+        cmv[11] = lic11(points, parameters.G_PTS);
         cmv[12] = lic12();
         cmv[13] = lic13();
         cmv[14] = lic14();
@@ -36,7 +36,34 @@ public class CMV {
     public static Boolean lic8() {return false;}
     public static Boolean lic9() {return false;}
     public static Boolean lic10() {return false;}
-    public static Boolean lic11() {return false;}
+    
+    /**
+     * Checks if there exists at least one pair of data points separated by exactly
+     * G_PTS intervening points where the x-coordinate decreases (points[j].x < points[i].x).
+     *
+     * @param points an array of Point objects to check
+     * @param gPts   the number of consecutive intervening points between the pair being checked
+     * @return true if there exists an index i such that j = i + gPts + 1 is within bounds
+     *         and points[j].x < points[i].x; false otherwise
+     */
+    public static boolean lic11(Point[] points, int gPts) {
+        if (points == null || points.length < 3) {
+            return false;
+        }
+
+        if (gPts < 1 || gPts > points.length - 2) {
+            return false;
+        }
+
+        for (int i = 0; i <= points.length - gPts - 2; i++) {
+            int j = i + gPts + 1;
+            if (points[j].x < points[i].x) {
+                return true;
+            }
+        }
+
+        return false;
+    }
     public static Boolean lic12() {return false;}
     public static Boolean lic13() {return false;}
     public static Boolean lic14() {return false;}
