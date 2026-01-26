@@ -9,6 +9,40 @@ class CMVTest {
     @Test 
     void initialTest() {
         assertTrue(true);
+
+    }        
+
+    @Test
+    void lic0_noConsecutivePointsSeparatedByMoreThanLENGTH1_returnsFalse() {
+        Point[] points = {
+            new Point(0, 0),
+            new Point(5, 0),
+            new Point(10, 0)
+        };
+
+        double LENGTH1 = 5;
+
+        assertFalse(CMV.lic0(points, LENGTH1));
+    }
+
+    @Test
+    void lic0_twoConsecutivePointsSeparatedByMoreThanLENGTH1_returnsTrue() {
+        Point[] points = {
+            new Point(5, 0),
+            new Point(0, 0),
+            new Point(10, 0)
+        };
+
+        double LENGTH1 = 5;
+
+        assertTrue(CMV.lic0(points, LENGTH1));
+    }
+
+    @Test
+    void lic0_emptyInput_returnsFalse() {
+        Point[] points = {};
+        double len = 5;
+        assertFalse(CMV.lic0(points, len));
     }
     
     /**

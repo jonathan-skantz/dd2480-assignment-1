@@ -5,7 +5,7 @@ public class CMV {
     public static boolean[] computeCMV(Point[] points, Parameters parameters) {
         boolean[] cmv = new boolean[15];
 
-        cmv[0] = lic0();
+        cmv[0] = lic0(points, parameters.LENGTH1);
         cmv[1] = lic1();
         cmv[2] = lic2();
         cmv[3] = lic3(points, parameters.AREA1);
@@ -24,7 +24,21 @@ public class CMV {
         return cmv;
     }
 
-    public static boolean lic0() {return false;}
+    /**
+     * Returns whether at least one pair of consecutive data points is separated by a distance greater than {@code LENGTH1}.
+     * @param points the data points (coordinates)
+     * @param LENGTH1 The distance which two consecutive data points must be further apart than
+     * @return {@code true} if the condition is met, {@code false} otherwise
+     */
+    public static boolean lic0(Point[] points, double LENGTH1) {
+        for (int i = 0; i < points.length - 1; i++) {
+            if (points[i].distance(points[i+1]) > LENGTH1) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static boolean lic1() {return false;}
     public static boolean lic2() {return false;}
     /**
