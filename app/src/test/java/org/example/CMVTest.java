@@ -94,4 +94,106 @@ class CMVTest {
         assertEquals(expected, Point.minEnclosingRadius(A, B, C), 1e-9, "minEnclosingRadius should return radius of the circumcircle of the triangle created by the three points when the triangle is acute.");
     }
 
+    /**
+     * If {@code NUMPOINTS} is less than five, lic13 should return false.
+     */
+    @Test
+    void lic13_NUMPOINTSLessThanFive_returnsFalse() {
+        Point[] points = {
+            new Point(0, 0),
+            new Point(1, 0)
+        };
+
+        int A_PTS = 1;
+        int B_PTS = 1;
+        double RADIUS1 = 1.0;
+        double RADIUS2 = 1.0;
+
+        assertFalse(CMV.lic13(points, A_PTS, B_PTS, RADIUS1, RADIUS2), "lic13 should return false if NUMPOINTS is less than 5.");
+    }
+
+    /**
+     * If {@code RADIUS2} is less than zero, lic13 should return false.
+     */
+    @Test
+    void lic13_RADIUS2LessThanZero_returnsFalse() {
+        Point[] points = {
+            new Point(0, 0),
+            new Point(1, 0),
+            new Point(2, 0),
+            new Point(3, 0),
+            new Point(4, 0)
+        };
+
+        int A_PTS = 1;
+        int B_PTS = 1;
+        double RADIUS1 = 1.0;
+        double RADIUS2 = -1.0;
+
+        assertFalse(CMV.lic13(points, A_PTS, B_PTS, RADIUS1, RADIUS2), "lic13 should return false if RADIUS2 is less than 0.");
+    }
+
+    /**
+     * If all triplets can be contained within a circle of radius {@code RADIUS1}, lic13 ahould return false.
+     */
+    @Test
+    void lic13_allTripletsContainedWithinRADIUS1_returnsFalse() {
+        Point[] points = {
+            new Point(0, 0),
+            new Point(1, 0),
+            new Point(-1, 0),
+            new Point(0, 1),
+            new Point(0, -1)
+        };
+
+        int A_PTS = 1;
+        int B_PTS = 1;
+        double RADIUS1 = 2.0;
+        double RADIUS2 = 2.0;
+
+        assertFalse(CMV.lic13(points, A_PTS, B_PTS, RADIUS1, RADIUS2), "lic13 should return false if all triplets are within a circle of radius RADIUS1.");
+    }
+
+    /**
+     * If no triplets can be contained within a circle of radius {@code RADIUS2}, lic13 should return false.
+     */
+    @Test
+    void lic13_noTripletsContainedWithinRADIUS2_returnsFalse() {
+        Point[] points = {
+            new Point(0, 0),
+            new Point(4, 0),
+            new Point(-4, 0),
+            new Point(0, 4),
+            new Point(0, -4)
+        };
+
+        int A_PTS = 1;
+        int B_PTS = 1;
+        double RADIUS1 = 1.0;
+        double RADIUS2 = 1.0;
+
+        assertFalse(CMV.lic13(points, A_PTS, B_PTS, RADIUS1, RADIUS2), "lic13 should return false if no triplet are within a circle of radius RADIUS2.");
+    }
+
+    /**
+     * If a triplet which can not be contained by {@code RADIUS1} exists and a triplet which can be contained by {@code RADIUS2} exists, lic13 should return true.
+     */
+    @Test
+    void lic13_notWithinRADIUS1ExistsAndWithinRADIUS2Exists_returnsTrue() {
+        Point[] points = {
+            new Point(0, 0),
+            new Point(0, 0),
+            new Point(2, 0),
+            new Point(4, 0),
+            new Point(-2, 0),
+            new Point(0, -4)
+        };
+
+        int A_PTS = 1;
+        int B_PTS = 1;
+        double RADIUS1 = 1.0;
+        double RADIUS2 = 4.0;
+
+        assertTrue(CMV.lic13(points, A_PTS, B_PTS, RADIUS1, RADIUS2), "lic13 should return true if there exists a triplet which can not be contained by RADIUS1 and a triplet exists whihc can be contained by RADIUS2.");
+    }
 }
