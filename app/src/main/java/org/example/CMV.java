@@ -15,7 +15,7 @@ public class CMV {
         cmv[6] = lic6();
         cmv[7] = lic7(points, parameters.K_PTS, parameters.LENGTH1);
         cmv[8] = lic8();
-        cmv[9] = lic9();
+        cmv[9] = lic9(points, parameters.C_PTS, parameters.D_PTS, parameters.EPSILON);
         cmv[10] = lic10();
         cmv[11] = lic11();
         cmv[12] = lic12();
@@ -24,6 +24,7 @@ public class CMV {
 
         return cmv;
     }
+
 
     /**
      * Returns whether at least one pair of consecutive data points is separated by a distance greater than {@code LENGTH1}.
@@ -223,7 +224,53 @@ public class CMV {
     }
 
     public static boolean lic8() {return false;}
-    public static boolean lic9() {return false;}
+    /**
+     * LIC 9: Angle < (PI - EPSILON) or > (PI + EPSILON) for 3 points separated by C_PTS, D_PTS
+     * @param points Input points (≥5 points required)
+     * @param C_PTS Input parameter
+     * @param D_PTS Input parameter
+     * @param EPSILON Input parameter
+     * @return true if condition is met
+     */
+    public static Boolean lic9(Point[] points, int C_PTS, int D_PTS, double EPSILON) {
+        int i = 0;
+        if(points.length < 5) return false;
+
+        for (Point A : points) {
+            if(i + C_PTS + D_PTS + 2 < points.length) {
+                Point B = points[i + C_PTS + 1];
+                Point C = points[i + C_PTS + D_PTS + 2];
+
+                if(!A.areTheSame(B) && !C.areTheSame(B)) {
+
+                    double BAx = A.x - B.x;
+                    double BAy = A.y - B.y;
+
+                    double BCx = C.x - B.x;
+                    double BCy = C.y - B.y;
+
+                    double dotProduct = BAx*BCx + BAy*BCy;
+
+                    double norm_BA = A.distance(B);
+                    double norm_BC = C.distance(B);
+
+                    if(norm_BA > 0 && norm_BC > 0) {
+                        double cosValue = dotProduct / (norm_BA * norm_BC);
+                        cosValue = Math.max(-1.0, Math.min(1.0, cosValue));
+                        double angle = Math.acos(cosValue);
+
+                        if(angle < Parameters.PI - EPSILON || angle > Parameters.PI + EPSILON) {
+                            return true;
+                        }
+                    }
+                }
+            }
+            i = i + 1;
+        }
+        return false;
+    }
+
+
     public static boolean lic10() {return false;}
     public static boolean lic11() {return false;}
     public static boolean lic12() {return false;}
