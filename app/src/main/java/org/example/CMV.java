@@ -1,4 +1,5 @@
 package org.example;
+import java.util.Arrays;
 
 
 public class CMV {
@@ -27,10 +28,16 @@ public class CMV {
 
     public static Boolean lic0() {return false;}
 
-    public static Boolean lic1(Point[] points, double radius1) {
+    /**
+     * Returns if at least three consecutive data points is does not fitt into a circle with radius {@code Radius1}.
+     * @param points the data points (coordinates)
+     * @param Radius1 The radius of the circle in which three consecutive data points must fitt
+     * @return {@code true} if the condition is met, {@code false} otherwise
+     */
+    public static boolean lic1(Point[] points, double RADIUS1) {
 
         // No need to check if there are no trio of points
-        if (radius1 < 0) return false;
+        if (RADIUS1 < 0) return false;
         if (points.length < 3) return false; 
 
         for (int i = 0; i < points.length - 2; i++) {
@@ -52,11 +59,11 @@ public class CMV {
             } else {
                 // Acute triangle
                 double s = (d1 + d2 + d3) / 2;
-                double area = Math.sqrt(s*(s-d1)*(s-d2)*(s-d3));
+                double area = Math.sqrt(s * (s - d1) * (s - d2) * (s - d3));
                 minRadius = (d1 * d2 * d3) / (4 * area);
             }
 
-            if (minRadius > radius1) return true; 
+            if (minRadius > RADIUS1) return true; 
         }
 
         return false; // No trio that fits the requirements found
