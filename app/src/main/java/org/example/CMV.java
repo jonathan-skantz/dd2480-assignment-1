@@ -1,4 +1,5 @@
 package org.example;
+import java.util.Arrays;
 
 public class CMV {
 
@@ -115,16 +116,34 @@ public class CMV {
         if(NUMPOINTS - 3 < A_PTS + B_PTS) return false; // (A_PTS + B_PTS ≤ (NUMPOINTS − 3))
 
         for(int i = 0; i < NUMPOINTS - (A_PTS + B_PTS + 2); i++) {
-        
             double A = points[i];
             double B = points[i + A_PTS + 1];
             double C = points[i + A_PTS + B_PTS + 2]; // i + (A_PTS + 1) + B_PTS + 1
 
-            
+            double d1 = p1.distance(A);
+            double d2 = p2.distance(B);
+            double d3 = p3.distance(C);
 
+            double[] arr = {d1, d2, d3};
+            double minRadius;
+            Arrays.sort(arr);
 
-        return false;
+            if (Math.pow(arr[2], 2) >= Math.pow(arr[1], 2) + Math.pow(arr[0], 2)) {
+                // Obtuse/Right triangle
+                minRadius = arr[2] / 2;
+            } else {
+                // Acute triangle
+                double s = (d1 + d2 + d3) / 2;
+                double area = Math.sqrt(s * (s - d1) * (s - d2) * (s - d3));
+                minRadius = (d1 * d2 * d3) / (4 * area);
+            }
+
+            if (minRadius > RADIUS1) return true; 
+        }
+
+        return false; // No trio that fits the requirements found
     }
+
 
     public static Boolean lic9() {return false;}
     public static Boolean lic10() {return false;}
