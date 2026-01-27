@@ -111,18 +111,20 @@ public class CMV {
      */
     public static Boolean lic8(Point[] points, int A_PTS, int B_PTS, double RADIUS1) {
         int NUMPOINTS = points.length;
+
+        if (RADIUS1 < 0) return false;
         if(NUMPOINTS < 5) return false; // The condition is not met when NUMPOINTS < 5
         if(A_PTS < 1 || B_PTS < 1) return false; // (1 ≤ A_PTS, 1 ≤ B_PTS)
         if(NUMPOINTS - 3 < A_PTS + B_PTS) return false; // (A_PTS + B_PTS ≤ (NUMPOINTS − 3))
 
         for(int i = 0; i < NUMPOINTS - (A_PTS + B_PTS + 2); i++) {
-            double A = points[i];
-            double B = points[i + A_PTS + 1];
-            double C = points[i + A_PTS + B_PTS + 2]; // i + (A_PTS + 1) + B_PTS + 1
+            Point A = points[i];
+            Point B = points[i + A_PTS + 1];
+            Point C = points[i + A_PTS + B_PTS + 2]; // i + (A_PTS + 1) + B_PTS + 1
 
-            double d1 = p1.distance(A);
-            double d2 = p2.distance(B);
-            double d3 = p3.distance(C);
+            double d1 = A.distance(B);
+            double d2 = B.distance(C);
+            double d3 = C.distance(A);
 
             double[] arr = {d1, d2, d3};
             double minRadius;

@@ -226,4 +226,199 @@ class CMVTest {
         assertFalse(CMV.lic5(points));
     }
 
+    /**
+     * If {@code RADIUS1} is negative, lic8 should return false.
+     */
+    @Test
+    void lic8_negativeRadius_returnsFalse() {
+
+        Point[] points = {
+            new Point(0, 0),
+            new Point(1, 0),
+            new Point(0, 0),
+            new Point(1, 0),
+            new Point(0, 1)
+        };
+
+        assertFalse(CMV.lic8(points, 1, 1, -1.0));
+    }
+
+    /**
+     * If there is less than five points as input, lic8 should return false.
+     */
+    @Test
+    void lic8_lessThanFivePoints_returnsFalse() {
+        Point[] points = {
+            new Point(0, 0),
+            new Point(1, 0),
+            new Point(0, 1),
+            new Point(1, 1)
+        };
+
+        assertFalse(CMV.lic8(points, 1, 1, 1.0));
+    }
+
+    /**
+     * If {@code A_PTS} < 1, lic8 should return false.
+     */
+    @Test
+    void lic8_aPTSLessThanOne_returnsFalse() {
+
+        Point[] points = {
+            new Point(0, 0),
+            new Point(1, 0),
+            new Point(0, 0),
+            new Point(1, 0),
+            new Point(0, 1)
+        };
+
+        assertFalse(CMV.lic8(points, 0, 1, 1.0));
+    }
+
+    /**
+     * If {@code B_PTS} < 1, lic8 should return false.
+     */
+    @Test
+    void lic8_bPTSLessThanOne_returnsFalse() {
+
+        Point[] points = {
+            new Point(0, 0),
+            new Point(1, 0),
+            new Point(0, 0),
+            new Point(1, 0),
+            new Point(0, 1)
+        };
+
+        assertFalse(CMV.lic8(points, 1, 0, 1.0));
+    }
+
+    /**
+     * If {@code A_PTS} + {@code B PTS} = ({@code NUMPOINTS} − 3), lic8 should return false.
+     */
+    @Test
+    void lic8_aPTSPlusBPTSEqualToNUMPOINTSMinusThree_returnsFalse() {
+
+        Point[] points = {
+            new Point(0, 0),
+            new Point(1, 0),
+            new Point(0, 0),
+            new Point(1, 0),
+            new Point(0, 1)
+        };
+
+        assertFalse(CMV.lic8(points, 1, 1, 1.0));
+    }
+
+    /**
+     * If {@code A_PTS} + {@code B PTS} < ({@code NUMPOINTS} − 3), lic8 should return false.
+     */
+    @Test
+    void lic8_aPTSPlusBPTSLessThanNUMPOINTSMinusThree_returnsFalse() {
+
+        Point[] points = {
+            new Point(0, 0),
+            new Point(1, 0),
+            new Point(0, 0),
+            new Point(0, 1)
+        };
+
+        assertFalse(CMV.lic8(points, 1, 1, 1.0));
+    }
+
+    /**
+     * If three consecutive points create an Obtuse/Right triangle that cannot fitt incide a cirecle with {@code RADIUS1}, lic8 should return true.
+     */
+    @Test
+    void lic8_obtuseRightTriangleMinimumRadiusGreaterThanRADIUS1_returnsTrue() {
+        Point[] points = {
+            new Point(0, 0),
+            new Point(0, 0),
+            new Point(3, 0),
+            new Point(0, 0),
+            new Point(0, 4)
+        };
+
+        assertTrue(CMV.lic8(points, 1, 1, 2.0));
+    }
+
+    /**
+     * If three consecutive points create an Obtuse/Right triangle that creates a minimum radius that is equal to {@code RADIUS1}, lic8 should return false.
+     */
+    @Test
+    void lic8_obtuseRightTriangleMinimumRadiusEqualToRADIUS1_returnsFalse() {
+        Point[] points = {
+            new Point(0, 0),
+            new Point(0, 0),
+            new Point(3, 0),
+            new Point(0, 0),
+            new Point(0, 4)
+        };
+
+        assertFalse(CMV.lic8(points, 1, 1, 2.5));
+    }
+
+    /**
+     * If three consecutive points create an Obtuse/Right triangle that can fitt incide a cirecle with {@code RADIUS1}, lic8 should return false.
+     */
+    @Test
+    void lic8_obtuseRightTriangleMinimumRadiusSmallerThanRADIUS1_returnsFalse() {
+        Point[] points = {
+            new Point(0, 0),
+            new Point(0, 0),
+            new Point(3, 0),
+            new Point(0, 0),
+            new Point(0, 4)
+        };
+
+        assertFalse(CMV.lic8(points, 1, 1, 3.0));
+    }
+
+    /**
+     * If three consecutive points create an acute triangle that cannot fitt incide a cirecle with {@code RADIUS1}, lic8 should return true.
+     */
+    @Test
+    void lic8_acuteTriangleMinimumRadiusGreaterThanRADIUS1_returnsTrue() {
+        Point[] points = {
+            new Point(0, 0),
+            new Point(0, 0),
+            new Point(2, 0),
+            new Point(0, 0),
+            new Point(1, Math.sqrt(3))
+        };
+
+        assertTrue(CMV.lic8(points, 1, 1, 1.0));
+    }
+
+    /**
+     * If three consecutive points create an acute triangle that creates a minimum radius that is equal to {@code RADIUS1}, lic8 should return false.
+     */
+    @Test
+    void lic8_acuteTriangleMinimumRadiusEqualToRADIUS1_returnsFalse() {
+        Point[] points = {
+            new Point(0, 0),
+            new Point(0, 0),
+            new Point(2, 0),
+            new Point(0, 0),
+            new Point(1, Math.sqrt(3))
+        };
+
+        assertFalse(CMV.lic8(points, 1, 1, (2.0 / Math.sqrt(3))));
+    }
+
+    /**
+     * If three consecutive points create an acute triangle that can fitt incide a cirecle with {@code RADIUS1}, lic8 should return false.
+     */
+    @Test
+    void lic8_acuteTriangleMinimumRadiusSmallerThanRADIUS1_returnsFalse() {
+        Point[] points = {
+            new Point(0, 0),
+            new Point(0, 0),
+            new Point(2, 0),
+            new Point(0, 0),
+            new Point(1, Math.sqrt(3))
+        };
+
+        assertFalse(CMV.lic8(points, 1, 1, 1.3));
+    }
+
 }
