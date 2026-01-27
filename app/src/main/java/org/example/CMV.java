@@ -7,7 +7,7 @@ public class CMV {
 
         cmv[0] = lic0();
         cmv[1] = lic1();
-        cmv[2] = lic2(points, parameters.EPSILON, PI);
+        cmv[2] = lic2(points, parameters.EPSILON, parameters.PI);
         cmv[3] = lic3();
         cmv[4] = lic4(points, parameters.Q_PTS, parameters.QUADS);
         cmv[5] = lic5();
