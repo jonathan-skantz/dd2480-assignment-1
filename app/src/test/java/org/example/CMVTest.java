@@ -14,7 +14,7 @@ class CMVTest {
      * If {@code AREA1} is negative, lic3 should return false.
      */
     @Test
-    void lic3_negativeArea_returnsFalse() {
+    void lic3_negativeAreaInput_returnsFalse() {
 
         Point[] points = {
             new Point(0, 0),
