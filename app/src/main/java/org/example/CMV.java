@@ -13,7 +13,7 @@ public class CMV {
         cmv[5] = lic5(points);
         cmv[6] = lic6();
         cmv[7] = lic7();
-        cmv[8] = lic8();
+        cmv[8] = lic8(points, parameters.A_PTS, parameters.B_PTS, parameters.RADIUS1);
         cmv[9] = lic9();
         cmv[10] = lic10();
         cmv[11] = lic11();
@@ -96,7 +96,36 @@ public class CMV {
   
     public static Boolean lic6() {return false;}
     public static Boolean lic7() {return false;}
-    public static Boolean lic8() {return false;}
+
+    /**
+     * Checks if there exists at least one set of three data points separated by exactly {@code A_PTS} and {@code B_PTS}
+     * consecutive intervening points, respectively, that cannot be contained within or on a circle of
+     * radius {@code RADIUS1}. The condition is not met when {@code NUMPOINTS} < 5.
+     * 
+     * @param points the data points (coordinates)
+     * @param A_PTS No. of consecutive points
+     * @param B_PTS No. of consecutive points
+     * @param RADIUS1 radius to the circle
+     * @return {@code true} if the statement holds, {@code false} otherwise.}
+     */
+    public static Boolean lic8(Point[] points, int A_PTS, int B_PTS, double RADIUS1) {
+        int NUMPOINTS = points.length;
+        if(NUMPOINTS < 5) return false; // The condition is not met when NUMPOINTS < 5
+        if(A_PTS < 1 || B_PTS < 1) return false; // (1 ≤ A_PTS, 1 ≤ B_PTS)
+        if(NUMPOINTS - 3 < A_PTS + B_PTS) return false; // (A_PTS + B_PTS ≤ (NUMPOINTS − 3))
+
+        for(int i = 0; i < NUMPOINTS - (A_PTS + B_PTS + 2); i++) {
+        
+            double A = points[i];
+            double B = points[i + A_PTS + 1];
+            double C = points[i + A_PTS + B_PTS + 2]; // i + (A_PTS + 1) + B_PTS + 1
+
+            
+
+
+        return false;
+    }
+
     public static Boolean lic9() {return false;}
     public static Boolean lic10() {return false;}
     public static Boolean lic11() {return false;}
