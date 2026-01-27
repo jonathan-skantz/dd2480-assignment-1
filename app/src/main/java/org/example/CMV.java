@@ -47,12 +47,14 @@ public class CMV {
             Point C = points[i + 2];
 
             // Can't be triangle if two points are the same
-            if(!A.areTheSame(B) && !A.areTheSame(C) && !B.areTheSame(C)) {
-                // Shoelace formula for area of triangle
-                double area = 0.5*Math.abs(A.x*(B.y-C.y) + B.x*(C.y-A.y) + C.x*(A.y-B.y));
-
-                if(area > AREA1) return true;
+            if(A.areTheSame(B) || A.areTheSame(C) || B.areTheSame(C)) {
+                continue;
             }
+            
+            // Shoelace formula for area of triangle
+            double area = 0.5*Math.abs(A.x*(B.y-C.y) + B.x*(C.y-A.y) + C.x*(A.y-B.y));
+
+            if(area > AREA1) return true;
         }
 
         return false;
