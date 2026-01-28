@@ -47,7 +47,7 @@ class CMVTest {
     }
 
     @Test
-    void lic10_conditionsNotMet_returnsFalse () {
+    void lic10_conditionsAreNotMet_returnsFalse () {
         Point[] points = {
                 new Point(0, 1),
                 new Point(0, 2),

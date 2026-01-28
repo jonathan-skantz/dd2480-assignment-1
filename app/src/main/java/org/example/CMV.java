@@ -38,10 +38,10 @@ public class CMV {
 
     /**
      * LIC 10: area > AREA1 for three data points separated by exactly E PTS and F PTS
-     * @param points Input points (≥5 points required)
-     * @param E_PTS Input parameter
-     * @param F_PTS Input parameter
-     * @param AREA1 Input parameter
+     * @param points Array of planar points (≥5 points required)
+     * @param E_PTS The number of consecutive intervening points between the first point and the second point of the triangle
+     * @param F_PTS The number of consecutive intervening points between the second point and the third point of the triangle
+     * @param AREA1 The threshold area for the condition
      * @return true if condition is met
      * */
     public static Boolean lic10(Point[] points, int E_PTS, int F_PTS, double AREA1) {
