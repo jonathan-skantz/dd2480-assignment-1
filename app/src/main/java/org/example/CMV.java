@@ -226,10 +226,10 @@ public class CMV {
     public static boolean lic8() {return false;}
     /**
      * LIC 9: Angle < (PI - EPSILON) or > (PI + EPSILON) for 3 points separated by C_PTS, D_PTS
-     * @param points Input points (≥5 points required)
-     * @param C_PTS Input parameter
-     * @param D_PTS Input parameter
-     * @param EPSILON Input parameter
+     * @param points Array of planar points (≥5 points required)
+     * @param C_PTS The number of consecutive intervening points between the first point and the vertex of the angle
+     * @param D_PTS The number of consecutive intervening points between the vertex and the third point of the angle
+     * @param EPSILON A non‑negative tolerance parameter for angular deviation from π
      * @return true if condition is met
      */
     public static Boolean lic9(Point[] points, int C_PTS, int D_PTS, double EPSILON) {
