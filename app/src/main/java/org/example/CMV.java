@@ -39,6 +39,21 @@ public class CMV {
     public static Boolean lic11() {return false;}
     public static Boolean lic12() {return false;}
 
+    /**
+     * Checks if there exists at least one set of three data points, separated by exactly {@code A_PTS} 
+     * and {@code B_PTS} consecutive intervening points, respectively, that cannot be contained within 
+     * or on a circle of radius {@code RADIUS1}. In addition, there must exist at least one set of three 
+     * data points (which can be the same or different from the first set) separated by exactly 
+     * {@code A_PTS} and {@code B_PTS} consecutive intervening points, respectively, that can be 
+     * contained within or on a circle of radius {@code RADIUS2}.
+     * 
+     * @param points the data points (coordinates)
+     * @param A_PTS number of intervening points between the 1st and 2nd point
+     * @param B_PTS number of intervening points between the 2nd and 3rd point
+     * @param RADIUS1 the radius used for the "cannot fit" requirement
+     * @param RADIUS2 the radius used for the "can fit" requirement
+     * @return {@code true} if both requirements are met, {@code false} otherwise
+     */
     public static Boolean lic13(Point[] points, int A_PTS, int B_PTS, double RADIUS1, double RADIUS2) {
         int NUMPOINTS = points.length;
         if(NUMPOINTS < 5) return false; // The condition is not met when NUMPOINTS < 5
