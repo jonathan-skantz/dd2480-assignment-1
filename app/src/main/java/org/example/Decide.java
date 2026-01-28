@@ -5,7 +5,7 @@ public class Decide {
         String LAUNCH = "NO";
 
         Boolean[] cmv = CMV.computeCMV(POINTS, PARAMETERS);
-        boolean[][] pum = PUM.computePUM(LCM, PUV);
+        boolean[][] pum = PUM.computePUM(LCM, cmv);
     
         return LAUNCH;
     }
