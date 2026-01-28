@@ -1,10 +1,10 @@
 package org.example;
 
 public class Decide {
-    public String DECIDE(int NUMPOINTS, double[] POINTS, Parameters PARAMETERS, Connector[][] LCM, boolean[] PUV) {
+    public String DECIDE(int NUMPOINTS, Point[] POINTS, Parameters PARAMETERS, Connector[][] LCM, boolean[] PUV) {
         String LAUNCH = "NO";
 
-        // Calculations ...
+        Boolean[] cmv = CMV.computeCMV(POINTS, PARAMETERS);
 
         return LAUNCH;
     }
