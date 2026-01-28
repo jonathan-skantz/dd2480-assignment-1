@@ -18,10 +18,13 @@ public class PUMTest {
         boolean[] cmv = {false, false};
         boolean[][] pum = PUM.computePUM(lcm, cmv);
 
-        assertTrue(pum[0][0]);
-        assertTrue(pum[0][1]);
-        assertTrue(pum[1][0]);
-        assertTrue(pum[1][1]);
+        boolean[][] expected = {
+            {true, true},
+            {true, true}
+        };
+
+        assertArrayEquals(expected, pum);
+
     }
 
     /**
@@ -37,10 +40,12 @@ public class PUMTest {
         boolean[] cmv = {true, false};
         boolean[][] pum = PUM.computePUM(lcm, cmv);
 
-        assertTrue(pum[0][0]);
-        assertFalse(pum[0][1]);
-        assertFalse(pum[1][0]);
-        assertFalse(pum[1][1]);
+        boolean[][] expected = {
+            {true, false},
+            {false, false}
+        };
+        
+        assertArrayEquals(expected, pum);
     }
 
     /**
@@ -56,9 +61,11 @@ public class PUMTest {
         boolean[] cmv = {true, false};
         boolean[][] pum = PUM.computePUM(lcm, cmv);
 
-        assertTrue(pum[0][0]);
-        assertTrue(pum[0][1]);
-        assertTrue(pum[1][0]);
-        assertFalse(pum[1][1]);
+        boolean[][] expected = {
+            {true, true},
+            {true, false}
+        };
+        
+        assertArrayEquals(expected, pum);
     }
 }
