@@ -19,7 +19,7 @@ public class CMV {
         cmv[11] = lic11();
         cmv[12] = lic12();
         cmv[13] = lic13();
-        cmv[14] = lic14();
+        cmv[14] = lic14(points, parameters.E_PTS, parameters.F_PTS, parameters.AREA1, parameters.AREA2);
 
         return cmv;
     }
@@ -172,7 +172,55 @@ public class CMV {
     public static Boolean lic11() {return false;}
     public static Boolean lic12() {return false;}
     public static Boolean lic13() {return false;}
-    public static Boolean lic14() {return false;}
+    
+    /**
+     * Checks two conditions:
+     *     1. Whether the area of some triangle is greater than {@code AREA1}.
+     *     2. Whether the area of some triangle is smaller than {@code AREA2}.
+     * 
+     * The triangle may be different in the two conditions, but the points A, B, C that
+     * form the triangle must achieve two conditions:
+     *     1. There must be exactly E_PTS points between A and B.
+     *     2. There must be exactly F_PTS points between B and C.
+     * 
+     * @param points data points
+     * @param E_PTS number of points between A and B (not including A nor B)
+     * @param F_PTS number of points between B and C (not including B nor C)
+     * @param AREA1 area which the triangle must be greater than
+     * @param AREA2 area which the triangle must be smaller than
+     * @return {@code true} if the two conditions are met, {@code false} otherwise
+     */
+    public static boolean lic14(Point[] points, int E_PTS, int F_PTS, double AREA1, double AREA2) {
+        if (points.length < 5 || AREA2 < 0) {
+            return false;
+        }
+        
+        boolean isGreaterThanAREA1 = false;
+        boolean isSmallerThanAREA2 = false;
+
+        // Break condition: The largest index (used for point C) cannot exceed the last index of `points`.
+        for (int i = 0; i + E_PTS + F_PTS + 2 < points.length; i++) {
+            Point A = points[i];
+            Point B = points[i + E_PTS + 1];    // Points i+1, i+2, ..., i+E_PTS must be ignored.
+            Point C = points[i + E_PTS + 1 + F_PTS + 1];    // Next F_PTS must be ignored.
+                
+            // Calculate the area of the triangle formed by ABC using Heron's formula.
+            double lengthAB = A.distance(B);
+            double lengthAC = A.distance(C);
+            double lengthBC = B.distance(C);
+            
+            double s = 0.5 * (lengthAB + lengthAC + lengthBC);      // `s` for semiperimeter (half of perimeter)
+            double triangleArea = Math.sqrt(s * (s - lengthAB) * (s - lengthAC) * (s - lengthBC));
+
+            if (triangleArea > AREA1) {
+                isGreaterThanAREA1 = true;
+            }
+            if (triangleArea < AREA2) {
+                isSmallerThanAREA2 = true;
+            }
+        }
+        return isGreaterThanAREA1 && isSmallerThanAREA2;
+    }
 
 
 }
