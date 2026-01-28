@@ -46,21 +46,21 @@ class CMVTest {
     }
 
     @Test
-    void lic12_conditionsMet2_returnsTrue() {
+    void lic12_conditionsAreNotMet_returnsFalse() {
         Point[] points = {
                 new Point(0, 1),
                 new Point(0, 2),
                 new Point(0, 0),
-                new Point(0, 3.1),
-                new Point(3, 0),
+                new Point(0, 2),
+                new Point(0, 0),
                 new Point(0.1,0),
-                new Point(0,6.2)
+                new Point(0,2)
         };
         int K_PTS = 2;
         double LENGTH1 = 2.0;
         double LENGTH2 = 1.0;
 
-        assertTrue(CMV.lic12(points, K_PTS, LENGTH1, LENGTH2));
+        assertFalse(CMV.lic12(points, K_PTS, LENGTH1, LENGTH2));
     }
 
 

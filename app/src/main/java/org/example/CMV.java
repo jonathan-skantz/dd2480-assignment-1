@@ -41,10 +41,10 @@ public class CMV {
     /**
      * LIC 12: distance > LENGTH1 for two data points separated by exactly K_PTS and distance > LENGTH2 for two other
      * (or the same) data points separated also by exactly K_PTS
-     * @param points Input parameter
-     * @param K_PTS Input parameter
-     * @param LENGTH1 Input parameter
-     * @param LENGTH2 Input parameter
+     * @param points Array of planar points (≥5 points required)
+     * @param K_PTS The number of consecutive intervening points between the two data points considered for distance checks
+     * @param LENGTH1 The threshold distance for the first part of the condition
+     * @param LENGTH2 The threshold distance for the second part of the condition
      * @return true if condition is met
      */
     public static Boolean lic12(Point[] points, int K_PTS, double LENGTH1, double LENGTH2) {
