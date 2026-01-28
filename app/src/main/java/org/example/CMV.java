@@ -2,8 +2,8 @@ package org.example;
 
 public class CMV {
 
-    public static Boolean[] computeCMV(Point[] points, Parameters parameters) {
-        Boolean[] cmv = new Boolean[15];
+    public static boolean[] computeCMV(Point[] points, Parameters parameters) {
+        boolean[] cmv = new boolean[15];
 
         cmv[0] = lic0();
         cmv[1] = lic1();
@@ -24,10 +24,9 @@ public class CMV {
         return cmv;
     }
 
-    public static Boolean lic0() {return false;}
-    public static Boolean lic1() {return false;}
-    public static Boolean lic2() {return false;}
-
+    public static boolean lic0() {return false;}
+    public static boolean lic1() {return false;}
+    public static boolean lic2() {return false;}
     /**
      * Check if there exists one set of three consecutive data points that are the vertices of a triangle
      * with area greater than {@code AREA1}.
@@ -36,7 +35,7 @@ public class CMV {
      * @param AREA1 minimum allowed area of a triangle formed by three consecutive points
      * @return {@code true} if such a set of three consecutive points exists, {@code false} otherwise
      */
-    public static Boolean lic3(Point[] points, double AREA1) {
+    public static boolean lic3(Point[] points, double AREA1) {
         if(AREA1 < 0) return false; // Since (0 ≤ AREA1) should hold
         if(points.length < 3) return false;
 
@@ -69,7 +68,7 @@ public class CMV {
      * @param QUADS Minimum no. of quadrants which the consecutive points need to be in
      * @return {@code true} if the statement holds, {@code false} otherwise.}
      */
-    public static Boolean lic4(Point[] points, int Q_PTS, int QUADS) {
+    public static boolean lic4(Point[] points, int Q_PTS, int QUADS) {
         int NUMPOINTS = points.length;
 
         if(Q_PTS < 2 || NUMPOINTS < Q_PTS) return false; // (2 ≤ Q_PTS ≤ NUMPOINTS)
@@ -111,7 +110,7 @@ public class CMV {
      * @return true if there exists at least one index i where points[i+1].x < points[i].x;
      *         false otherwise
      */
-    public static Boolean lic5(Point[] points) {
+    public static boolean lic5(Point[] points) {
         if (points == null || points.length < 2) {
             return false;
         }
@@ -125,7 +124,7 @@ public class CMV {
         return false;
     }
   
-    public static Boolean lic6() {return false;}
+    public static boolean lic6() {return false;}
     
     /**
      * Checks for at least one pair of points separated by exactly K_PTS
@@ -136,7 +135,7 @@ public class CMV {
      * @param LENGTH1  the distance threshold, must be >= 0
      * @return true if such a pair exists, otherwise false or on invalid input
      */
-    public static Boolean lic7(Point[] points, int K_PTS, double LENGTH1) {
+    public static boolean lic7(Point[] points, int K_PTS, double LENGTH1) {
         if (points == null) {
             return false;
         }
@@ -166,13 +165,13 @@ public class CMV {
 
         return false;
     }
-    public static Boolean lic8() {return false;}
-    public static Boolean lic9() {return false;}
-    public static Boolean lic10() {return false;}
-    public static Boolean lic11() {return false;}
-    public static Boolean lic12() {return false;}
-    public static Boolean lic13() {return false;}
-    
+
+    public static boolean lic8() {return false;}
+    public static boolean lic9() {return false;}
+    public static boolean lic10() {return false;}
+    public static boolean lic11() {return false;}
+    public static boolean lic12() {return false;}
+    public static boolean lic13() {return false;}
     /**
      * Checks two conditions:
      *     1. Whether the area of some triangle is greater than {@code AREA1}.
@@ -221,6 +220,5 @@ public class CMV {
         }
         return isGreaterThanAREA1 && isSmallerThanAREA2;
     }
-
 
 }
