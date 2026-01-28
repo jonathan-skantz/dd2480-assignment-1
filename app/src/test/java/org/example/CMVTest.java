@@ -431,4 +431,110 @@ class CMVTest {
         assertFalse(CMV.lic7(points, 1, -1.0));
     }
 
+    @Test
+    void lic14_negativeAREA2_returnsFalse() {
+        Point[] points = {
+            new Point(0, 5),
+            new Point(1, 3),
+            new Point(2, 0),
+            new Point(3, 2),
+            new Point(4, 0)
+        };
+
+        assertFalse(CMV.lic14(points, 1, 1, 1.0, -1.0));
+    }
+
+    @Test
+    void lic14_lessThanFivePoints_returnsFalse() {
+        Point[] points = {
+            new Point(0, 0),
+            new Point(1, 0),
+            new Point(2, 0),
+            new Point(3, 0)
+        };
+
+        assertFalse(CMV.lic14(points, 1, 1, 1.0, 2.0));
+    }
+
+    /**
+     * Expected: true, because 0 intervening points is still valid
+     * (points A and B are immediate neighbors)
+     */
+    @Test
+    void lic14_invalidE_PTS_returnsTrue() {
+        Point[] points = {
+            new Point(0, 5),
+            new Point(1, 3),
+            new Point(2, 0),
+            new Point(3, 2),
+            new Point(4, 0)
+        };
+
+        assertTrue(CMV.lic14(points, 0, 1, 1.0, 2.0));
+    }
+
+    /**
+     * Expected: true, because 0 intervening points is still valid
+     * (points B and C are immediate neighbors)
+     */
+    @Test
+    void lic14_F_PTSis0_returnsTrue() {
+        Point[] points = {
+            new Point(0, 5),
+            new Point(1, 3),
+            new Point(2, 0),
+            new Point(3, 2),
+            new Point(4, 0)
+        };
+
+        assertTrue(CMV.lic14(points, 1, 0, 1.0, 2.0));
+    }
+
+    @Test
+    void lic14_E_PTSandF_PTStooLarge_returnsFalse() {
+        Point[] points = {
+            new Point(0, 5),
+            new Point(1, 3),
+            new Point(2, 0),
+            new Point(3, 2),
+            new Point(4, 0)
+        };
+
+        assertFalse(CMV.lic14(points, 3, 4, 1.0, 2.0));
+    }
+
+    /**
+     * The area formed by the three points (0,0), (0,2), (4,0) should be
+     * between 1.0 and 10.0.
+     * Expected: true, because the true area is 4.
+     */
+    @Test
+    void lic14_validBothConditions_returnsTrue() {
+        Point[] points = {
+            new Point(0, 0),   // A
+            new Point(0, 0),
+            new Point(0, 2),   // B
+            new Point(0, 0),
+            new Point(4, 0)    // C
+        };
+
+        assertTrue(CMV.lic14(points, 1, 1, 1.0, 10.0));
+    }
+    
+    /**
+     * All points are on the same line.
+     * Expected: false, since the area is 0.
+     */
+    @Test
+    void lic14_allPointsOnOneLine_returnsFalse() {
+        Point[] points = {
+            new Point(0, 0),
+            new Point(1, 0),
+            new Point(2, 0),
+            new Point(3, 0),
+            new Point(4, 0)
+        };
+
+        assertFalse(CMV.lic14(points, 1, 1, 0.5, 2.0));
+    }
 }
