@@ -41,13 +41,13 @@ public class CMV {
         if (points.length < 3) return false; 
 
         for (int i = 0; i < points.length - 2; i++) {
-            Point p1 = points[i];
-            Point p2 = points[i + 1];
-            Point p3 = points[i + 2];
+            Point A = points[i];
+            Point B = points[i + 1];
+            Point C = points[i + 2];
 
-            double d1 = p1.distance(p2);
-            double d2 = p2.distance(p3);
-            double d3 = p3.distance(p1);
+            double d1 = A.distance(B);
+            double d2 = B.distance(C);
+            double d3 = C.distance(A);
 
             double[] arr = {d1, d2, d3};
             double minRadius;
