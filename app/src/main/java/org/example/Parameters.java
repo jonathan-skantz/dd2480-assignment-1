@@ -22,7 +22,7 @@ public class Parameters {
     double RADIUS2; // Maximum radius in LIC 13
     double AREA2;   // Maximum area in LIC 14
 
-    public Parameters(int length1, int radius1, int epsilon, int area1, int q_pts, int quads, int n_pts, int dist, int k_pts, int a_pts, int b_pts, int c_pts, int d_pts, int e_pts, int f_pts, int g_pts, int length2, int radius2, int area2) {
+    public Parameters(double length1, double radius1, double epsilon, double area1, int q_pts, int quads, int n_pts, double dist, int k_pts, int a_pts, int b_pts, int c_pts, int d_pts, int e_pts, int f_pts, int g_pts, double length2, double radius2, double area2) {
         LENGTH1 = length1;
         RADIUS1 = radius1;
         EPSILON = epsilon;
