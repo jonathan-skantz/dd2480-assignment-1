@@ -6,7 +6,9 @@ public class Decide {
 
         boolean[] cmv = CMV.computeCMV(POINTS, PARAMETERS);
         boolean[][] pum = PUM.computePUM(LCM, cmv);
+        boolean[] fuv = FUV.computeFUV(PUV, pum);
     
+        if(FUV.isAllTrue(fuv)) return "YES";
         return LAUNCH;
     }
 }
