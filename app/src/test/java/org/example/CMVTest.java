@@ -46,7 +46,9 @@ class CMVTest {
     }
     
     /**
-     * If {@code AREA1} is negative, lic3 should return false.
+     * Negative test: If {@code AREA1} is negative, lic3 should return false.
+     * Test case: Points (0, 0) → (1, 0) → (0, 1).
+     * Expected: false, since area -1.0 is input to lic3.
      */
     @Test
     void lic3_negativeAreaInput_returnsFalse() {
@@ -61,7 +63,9 @@ class CMVTest {
     }
 
     /**
-     * If less than three points in input, lic3 should return false.
+     * Negative test: If less than three points in input, lic3 should return false.
+     * Test case: Points (0, 0) → (1, 0)
+     * Expected: false, since there are only two points and {@code 2 < 3}
      */
     @Test
     void lic3_lessThanThreePoints_returnsFalse() {
@@ -74,7 +78,9 @@ class CMVTest {
     }
 
     /**
-     * If two points are the same, lic3 should return false.
+     * Negative test: If two points are the same, lic3 should return false.
+     * Test case: (0, 0) → (0, 0) → (1, 0)
+     * Expected: false, since two the first two points are the same, thus the three points cannot form a triangle with {@code area > AREA1}.
      */
     @Test
     void lic3_twoPointsAreTheSame_returnsFalse() {
@@ -88,7 +94,9 @@ class CMVTest {
     }
 
     /**
-     * If all points are on the same line, the area is zero and lic3 should return false.
+     * Negative case: If all points are on the same line, the area is zero and lic3 should return false.
+     * Test case: (0, 0) → (1, 1) → (2, 2)
+     * Expected: false, since all points lie on the same line and can therefore not form a triangle with {@code area > AREA1}.
      */
     @Test
     void lic3_allPointsOnSameLine_returnsFalse() {
@@ -102,7 +110,9 @@ class CMVTest {
     }
 
     /**
-     * If area of triangle equal to {@code AREA1}, then the area isn't greater than {@code AREA1} and lic3 should fail.
+     * Negative case: If area of triangle equal to {@code AREA1}, then the area isn't greater than {@code AREA1} and lic3 should fail.
+     * Test case: (0, 0) → (2, 0) → (0, 1)
+     * Expected: false, since the area is equal to {@code AREA1}, and thus {@code area !> AREA1}.
      */
     @Test
     void lic3_triangleAreaEqualToAREA1_returnsFalse() {
@@ -116,7 +126,9 @@ class CMVTest {
     }
 
     /**
-     * If three consecutive points form a triangle with and area larger than {@code AREA1}, lic3 should return true.
+     * Positive case: If three consecutive points form a triangle with and area larger than {@code AREA1}, lic3 should return true.
+     * Test case: (0, 0) → (4, 0) → (0, 2)
+     * Expected: true, since {@code area > AREA1}.
      */
     @Test
     void lic3_trianglAreaGreaterThanAREA1_returnsTrue() {
@@ -130,7 +142,9 @@ class CMVTest {
     }
 
     /**
-     * If a triplet which satisfies the condition {@code area > AREA1} appears later in the point array, lic3 should return true.
+     * Positive test: If a triplet which satisfies the condition {@code area > AREA1} appears later in the point array, lic3 should return true.
+     * Test case: (0, 0) → (1, 1) → (2, 2) → (2, 1)
+     * Expected: true, since the last triplet satisfies the coondition area > 
      */
     @Test
     void lic3_laterTripletSatisfiesCondition_returnsTrue() {
@@ -145,7 +159,9 @@ class CMVTest {
     }
 
     /**
-     * If multiple triangles can be formed out of the points but none satisfy the condition {@code area > AREA1}, lic3 should return false.
+     * Negative case: If multiple triangles can be formed out of the points but none satisfy the condition {@code area > AREA1}, lic3 should return false.
+     * Test case: (0, 0) → (1, 1) → (1, 0) → (3, 0) → (3, 0.5)
+     * Expected: false, since none of the triplets form an area greater than {@code AREA1}.
      */
     @Test
     void lic3_noTriangleWithAreaLargerThanAREA1Exists_returnsFalse() {
