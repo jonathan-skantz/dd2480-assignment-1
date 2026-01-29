@@ -78,7 +78,9 @@ public class CMV {
             double dotProduct = (v1x * v2x) + (v1y * v2y);
             double magnitudeV1 = Math.sqrt(Math.pow(v1x, 2) + Math.pow(v1y, 2));
             double magnitudeV2 = Math.sqrt(Math.pow(v2x, 2) + Math.pow(v2y, 2));
-            double angle = Math.acos(dotProduct / (magnitudeV1 * magnitudeV2)); // Angle in radians
+            double cosValue = dotProduct / (magnitudeV1 * magnitudeV2);
+            cosValue = Math.max(-1.0, Math.min(1.0, cosValue));
+            double angle = Math.acos(cosValue); // Angle in radians
 
             if (angle < (PI - EPSILON) || angle > (PI + EPSILON)) return true;
 
