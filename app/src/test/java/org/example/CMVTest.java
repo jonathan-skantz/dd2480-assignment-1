@@ -843,7 +843,9 @@ class CMVTest {
     }
 
     /**
-     * If {@code NUMPOINTS} is less than five, lic13 should return false.
+     * Negative test: If {@code NUMPOINTS} is less than five, lic13 should return false.
+     * Test case: (0, 0) → (1, 0)
+     * Expected: false, since {@code NUMPOINTS = 2} and {@code 2 < 5}
      */
     @Test
     void lic13_NUMPOINTSLessThanFive_returnsFalse() {
@@ -861,7 +863,9 @@ class CMVTest {
     }
 
     /**
-     * If {@code RADIUS2} is less than zero, lic13 should return false.
+     * Negative test: If {@code RADIUS2} is less than zero, lic13 should return false.
+     * Test case: (0, 0) → (1, 0) → (2, 0) → (3, 0) → (4, 0)
+     * Expected: false, since {@code RADIUS2 = -1.0} and {@code -1.0 < 0}.
      */
     @Test
     void lic13_RADIUS2LessThanZero_returnsFalse() {
@@ -882,7 +886,9 @@ class CMVTest {
     }
 
     /**
-     * If all triplets can be contained within a circle of radius {@code RADIUS1}, lic13 ahould return false.
+     * Negative test: If all triplets can be contained within a circle of radius {@code RADIUS1}, lic13 ahould return false.
+     * Test case: (0, 0) → (1, 0) → (-1, 0) → (0, 1) → (0, -1)
+     * Expected: false, since {@code RADIUS1 = 2.0} all triplets can be contained within a circle of radius 2.0.
      */
     @Test
     void lic13_allTripletsContainedWithinRADIUS1_returnsFalse() {
@@ -903,7 +909,9 @@ class CMVTest {
     }
 
     /**
-     * If no triplets can be contained within a circle of radius {@code RADIUS2}, lic13 should return false.
+     * Negative test: If no triplets can be contained within a circle of radius {@code RADIUS2}, lic13 should return false.
+     * Test case: (0, 0) → (4, 0) → (-4, 0) → (0, 4) → (0, -4)
+     * Expected: false, since {@code RADIUS2 = 1.0} and no triplet can be contained in a circle with radius 1.0.
      */
     @Test
     void lic13_noTripletsContainedWithinRADIUS2_returnsFalse() {
@@ -924,7 +932,10 @@ class CMVTest {
     }
 
     /**
-     * If a triplet which can not be contained by {@code RADIUS1} exists and a triplet which can be contained by {@code RADIUS2} exists, lic13 should return true.
+     * Positive test: If a triplet which can not be contained by {@code RADIUS1} exists and a triplet which can be contained by {@code RADIUS2} exists, lic13 should return true.
+     * Test case: (0, 0) → (0, 0) → (2, 0) → (4, 0) → (-2, 0) → (0, -4)
+     * Expected: true, since triplet ((0, 0), (2, 0), (-2, 0)) cannot be contained within a circle of radius {@code RADIUS1 = 1.0}
+     * and triplet ((0, 0), (4, 0), (0, -4)) can be contained within a circle of radius {@code RADIUS2 = 4.0}.
      */
     @Test
     void lic13_notWithinRADIUS1ExistsAndWithinRADIUS2Exists_returnsTrue() {
