@@ -1,4 +1,5 @@
 package org.example;
+import java.util.Arrays;
 
 public class CMV {
 
@@ -6,7 +7,7 @@ public class CMV {
         boolean[] cmv = new boolean[15];
 
         cmv[0] = lic0(points, parameters.LENGTH1);
-        cmv[1] = lic1();
+        cmv[1] = lic1(points, parameters.RADIUS1);
         cmv[2] = lic2(points, parameters.EPSILON, parameters.PI);
         cmv[3] = lic3(points, parameters.AREA1);
         cmv[4] = lic4(points, parameters.Q_PTS, parameters.QUADS);
@@ -39,7 +40,46 @@ public class CMV {
         return false;
     }
 
-    public static boolean lic1() {return false;}
+    /**
+     * Returns if at least three consecutive data points is does not fitt into a circle with radius {@code Radius1}.
+     * @param points the data points (coordinates)
+     * @param Radius1 The radius of the circle in which three consecutive data points must fitt
+     * @return {@code true} if the condition is met, {@code false} otherwise
+     */
+    public static boolean lic1(Point[] points, double RADIUS1) {
+
+        // No need to check if there are no trio of points
+        if (RADIUS1 < 0) return false;
+        if (points.length < 3) return false; 
+
+        for (int i = 0; i < points.length - 2; i++) {
+            Point A = points[i];
+            Point B = points[i + 1];
+            Point C = points[i + 2];
+
+            double d1 = A.distance(B);
+            double d2 = B.distance(C);
+            double d3 = C.distance(A);
+
+            double[] arr = {d1, d2, d3};
+            double minRadius;
+            Arrays.sort(arr);
+
+            if (Math.pow(arr[2], 2) >= Math.pow(arr[1], 2) + Math.pow(arr[0], 2)) {
+                // Obtuse/Right triangle
+                minRadius = arr[2] / 2;
+            } else {
+                // Acute triangle
+                double s = (d1 + d2 + d3) / 2;
+                double area = Math.sqrt(s * (s - d1) * (s - d2) * (s - d3));
+                minRadius = (d1 * d2 * d3) / (4 * area);
+            }
+
+            if (minRadius > RADIUS1) return true; 
+        }
+
+        return false; // No trio that fits the requirements found
+    }
 
     /**
      * There exists at least one set of three consecutive data points which form an angle such that:
