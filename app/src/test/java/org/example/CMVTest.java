@@ -9,7 +9,6 @@ class CMVTest {
     @Test 
     void initialTest() {
         assertTrue(true);
-
     }        
 
     @Test
@@ -157,6 +156,120 @@ class CMVTest {
         assertFalse(CMV.lic1(points, 1.3));
     }
 
+    
+    /**
+     * If {@code EPSILON} is negative, lic1 should return false.
+     */
+    @Test
+    void lic2_negativeEPSILON_returnsFalse() {
+
+        Point[] points = {
+            new Point(0, 0),
+            new Point(1, 0),
+            new Point(0, 1)
+        };
+
+        assertFalse(CMV.lic2(points, -1.0, Parameters.PI));
+    }
+
+    /**
+     * If {@code EPSILON} is larger than {@code PI}, lic1 should return false.
+     */
+    @Test
+    void lic2_EPSILONBiggerThanPI_returnsFalse() {
+
+        Point[] points = {
+            new Point(0, 0),
+            new Point(1, 0),
+            new Point(0, 1)
+        };
+
+        assertFalse(CMV.lic2(points, 4.0, Parameters.PI));
+    }
+
+    /**
+     * If less than three points in input, lic2 should return false.
+     */
+    @Test
+    void lic2_lessThanThreePoints_returnsFalse() {
+        Point[] points = {
+            new Point(0, 0),
+            new Point(1, 0)
+        };
+
+        assertFalse(CMV.lic2(points, 1, Parameters.PI));
+    }
+
+    /**
+     * If the first point coincides with the vertex, lic2 should return false.
+     */
+    @Test
+    void lic2_firstPointEqualToVertex_returnsFalse() {
+        Point[] points = {
+            new Point(0, 0),
+            new Point(0, 0),
+            new Point(1, 0)
+        };
+
+        assertFalse(CMV.lic2(points, 1, Parameters.PI));
+    }
+
+    /**
+     * If the last point coincides with the vertex, lic2 should return false.
+     */
+    @Test
+    void lic2_lastPointEqualToVertex_returnsFalse() {
+        Point[] points = {
+            new Point(0, 0),
+            new Point(1, 0),
+            new Point(1, 0)
+        };
+
+        assertFalse(CMV.lic2(points, 1, Parameters.PI));
+    }
+
+    /**
+     * If both other points coincides with the vertex, lic2 should return false.
+     */
+    @Test
+    void lic2_bothPointsEqualToVertex_returnsFalse() {
+        Point[] points = {
+            new Point(1, 0),
+            new Point(1, 0),
+            new Point(1, 0)
+        };
+
+        assertFalse(CMV.lic2(points, 1, Parameters.PI));
+    }
+
+    /**
+     * If angle < {@code (PI − EPSILON)}, lic2 should return true.
+     */
+    @Test
+    void lic2_angleSmall_returnsTrue() {
+        Point[] points = {
+            new Point(1, 0),
+            new Point(0, 0),
+            new Point(0, 1)
+        };
+        
+        assertTrue(CMV.lic2(points, 0.5, Parameters.PI));
+    }
+
+    /**
+     * If angle > {@code (PI + EPSILON)}, lic2 should return true.
+     */
+    @Test
+    void lic2_angleLarge_returnsTrue() {
+        Point[] points = {
+            new Point(-1, -0.01),
+            new Point(0, 0), 
+            new Point(1, -0.01)
+        };
+
+        assertTrue(CMV.lic2(points, 0.0, Parameters.PI));
+    }
+
     /**
      * If {@code AREA1} is negative, lic3 should return false.
      */
@@ -271,7 +384,7 @@ class CMVTest {
 
         assertFalse(CMV.lic3(points, 1));
     }
-
+    
     /**
      * If {@code Q_PTS} is less than 2, lic4 should return false.
      */
