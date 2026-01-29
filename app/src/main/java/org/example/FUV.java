@@ -15,7 +15,7 @@ public class FUV {
         boolean[] fuv = new boolean[fuv_length];
 
         for(int i = 0; i < fuv_length; i++) {
-            if(!puv[i]) fuv[i] = true;
+            fuv[i] = puv[i] ? isAllTrue(pum[i]) : true;
             else fuv[i] = isAllTrue(pum[i]);
         }
 
