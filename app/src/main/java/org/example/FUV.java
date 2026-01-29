@@ -11,7 +11,7 @@ public class FUV {
     * @return the Final Unlocking Vector (FUV)
     */
     public static boolean[] computeFUV(boolean[] puv, boolean[][] pum) {
-        int fuv_length = puv.length;
+        int fuvLength = puv.length;
         boolean[] fuv = new boolean[fuv_length];
 
         for(int i = 0; i < fuv_length; i++) {
