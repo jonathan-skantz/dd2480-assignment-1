@@ -790,7 +790,8 @@ class CMVTest {
     }
 
     /**
-     * If {@code A_PTS} + {@code B PTS} < ({@code NUMPOINTS} − 3), lic8 should return false.
+     * NUMPOINTS - 3 < A_PTS + B_PTS
+     * If ({@code NUMPOINTS} − 3) < {@code A_PTS} + {@code B PTS}, lic8 should return false.
      */
     @Test
     void lic8_aPTSPlusBPTSLessThanNUMPOINTSMinusThree_returnsFalse() {
@@ -799,10 +800,11 @@ class CMVTest {
             new Point(0, 0),
             new Point(1, 0),
             new Point(0, 0),
-            new Point(0, 1)
+            new Point(0, 1),
+            new Point(2, 0)
         };
 
-        assertFalse(CMV.lic8(points, 1, 1, 1.0));
+        assertFalse(CMV.lic8(points, 2, 2, 1.0));
     }
 
     /**
