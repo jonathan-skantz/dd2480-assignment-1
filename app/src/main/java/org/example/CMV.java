@@ -237,31 +237,32 @@ public class CMV {
         if(points.length < 5) return false;
 
         for (Point A : points) {
-            if(i + C_PTS + D_PTS + 2 < points.length) {
-                Point B = points[i + C_PTS + 1];
-                Point C = points[i + C_PTS + D_PTS + 2];
+            if(i + C_PTS + D_PTS + 2 >= points.length) {
+                break;
+            }
+            Point B = points[i + C_PTS + 1];
+            Point C = points[i + C_PTS + D_PTS + 2];
 
-                if(!A.areTheSame(B) && !C.areTheSame(B)) {
+            if(!A.areTheSame(B) && !C.areTheSame(B)) {
 
-                    double BAx = A.x - B.x;
-                    double BAy = A.y - B.y;
+                double BAx = A.x - B.x;
+                double BAy = A.y - B.y;
 
-                    double BCx = C.x - B.x;
-                    double BCy = C.y - B.y;
+                double BCx = C.x - B.x;
+                double BCy = C.y - B.y;
 
-                    double dotProduct = BAx*BCx + BAy*BCy;
+                double dotProduct = BAx*BCx + BAy*BCy;
 
-                    double norm_BA = A.distance(B);
-                    double norm_BC = C.distance(B);
+                double norm_BA = A.distance(B);
+                double norm_BC = C.distance(B);
 
-                    if(norm_BA > 0 && norm_BC > 0) {
-                        double cosValue = dotProduct / (norm_BA * norm_BC);
-                        cosValue = Math.max(-1.0, Math.min(1.0, cosValue));
-                        double angle = Math.acos(cosValue);
+                if(norm_BA > 0 && norm_BC > 0) {
+                    double cosValue = dotProduct / (norm_BA * norm_BC);
+                    cosValue = Math.max(-1.0, Math.min(1.0, cosValue));
+                    double angle = Math.acos(cosValue);
 
-                        if(angle < Parameters.PI - EPSILON || angle > Parameters.PI + EPSILON) {
-                            return true;
-                        }
+                    if(angle < Parameters.PI - EPSILON || angle > Parameters.PI + EPSILON) {
+                        return true;
                     }
                 }
             }
