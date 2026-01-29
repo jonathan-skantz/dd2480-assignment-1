@@ -12,11 +12,10 @@ public class FUV {
     */
     public static boolean[] computeFUV(boolean[] puv, boolean[][] pum) {
         int fuvLength = puv.length;
-        boolean[] fuv = new boolean[fuv_length];
+        boolean[] fuv = new boolean[fuvLength];
 
-        for(int i = 0; i < fuv_length; i++) {
+        for(int i = 0; i < fuvLength; i++) {
             fuv[i] = puv[i] ? isAllTrue(pum[i]) : true;
-            else fuv[i] = isAllTrue(pum[i]);
         }
 
         return fuv;
