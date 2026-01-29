@@ -7,8 +7,8 @@ public class CMV {
         boolean[] cmv = new boolean[15];
 
         cmv[0] = lic0(points, parameters.LENGTH1);
-        cmv[1] = lic1();
-        cmv[2] = lic2();
+        cmv[1] = lic1(points, parameters.RADIUS1);
+        cmv[2] = lic2(points, parameters.EPSILON, parameters.PI);
         cmv[3] = lic3(points, parameters.AREA1);
         cmv[4] = lic4(points, parameters.Q_PTS, parameters.QUADS);
         cmv[5] = lic5(points);
@@ -40,8 +40,95 @@ public class CMV {
         return false;
     }
 
-    public static boolean lic1() {return false;}
-    public static boolean lic2() {return false;}
+    /**
+     * Returns if at least three consecutive data points is does not fitt into a circle with radius {@code Radius1}.
+     * @param points the data points (coordinates)
+     * @param Radius1 The radius of the circle in which three consecutive data points must fitt
+     * @return {@code true} if the condition is met, {@code false} otherwise
+     */
+    public static boolean lic1(Point[] points, double RADIUS1) {
+
+        // No need to check if there are no trio of points
+        if (RADIUS1 < 0) return false;
+        if (points.length < 3) return false; 
+
+        for (int i = 0; i < points.length - 2; i++) {
+            Point A = points[i];
+            Point B = points[i + 1];
+            Point C = points[i + 2];
+
+            double d1 = A.distance(B);
+            double d2 = B.distance(C);
+            double d3 = C.distance(A);
+
+            double[] arr = {d1, d2, d3};
+            double minRadius;
+            Arrays.sort(arr);
+
+            if (Math.pow(arr[2], 2) >= Math.pow(arr[1], 2) + Math.pow(arr[0], 2)) {
+                // Obtuse/Right triangle
+                minRadius = arr[2] / 2;
+            } else {
+                // Acute triangle
+                double s = (d1 + d2 + d3) / 2;
+                double area = Math.sqrt(s * (s - d1) * (s - d2) * (s - d3));
+                minRadius = (d1 * d2 * d3) / (4 * area);
+            }
+
+            if (minRadius > RADIUS1) return true; 
+        }
+
+        return false; // No trio that fits the requirements found
+    }
+
+    /**
+     * There exists at least one set of three consecutive data points which form an angle such that:
+     * angle < (PI − EPSILON) or angle > (PI + EPSILON)
+     * The second of the three consecutive points is always the vertex of the angle. If either the first
+     * point or the last point (or both) coincides with the vertex, the angle is undefined and the LIC
+     * is not satisfied by those three points.
+     * 
+     * @param points the data points (coordinates)
+     * @param EPSILON Deviation from PI
+     * @param PI pi as specified by the excercise 
+     * @return {@code true} if such a set of three consecutive points exists, {@code false} otherwise
+     */
+    public static boolean lic2(Point[] points, double EPSILON, double PI) {
+        if(EPSILON < 0 || EPSILON >= PI) return false; // Since (0 ≤ EPSILON < PI) should hold
+        if(points.length < 3) return false;
+
+        // Iteratively check sets of three consequtive points
+        for(int i = 0; i < points.length - 2; i++) {
+            Point A = points[i];
+            Point B = points[i + 1]; // Vertex of the angle
+            Point C = points[i + 2];
+            
+            // Create vectors
+            // Vector from B to A
+            double v1x = A.x - B.x;
+            double v1y = A.y - B.y;
+
+            // Vector from B to C
+            double v2x = C.x - B.x;
+            double v2y = C.y - B.y;
+
+            // Check if angle is undefined
+            if(B.areTheSame(A) || B.areTheSame(C)) continue;
+            
+            double dotProduct = (v1x * v2x) + (v1y * v2y);
+            double magnitudeV1 = Math.sqrt(Math.pow(v1x, 2) + Math.pow(v1y, 2));
+            double magnitudeV2 = Math.sqrt(Math.pow(v2x, 2) + Math.pow(v2y, 2));
+            double cosValue = dotProduct / (magnitudeV1 * magnitudeV2);
+            cosValue = Math.max(-1.0, Math.min(1.0, cosValue));
+            double angle = Math.acos(cosValue); // Angle in radians
+
+            if (angle < (PI - EPSILON) || angle > (PI + EPSILON)) return true;
+
+        }
+
+        return false; // No such trio of points excist
+    }
+
     /**
      * Check if there exists one set of three consecutive data points that are the vertices of a triangle
      * with area greater than {@code AREA1}.
