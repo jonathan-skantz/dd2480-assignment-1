@@ -9,7 +9,6 @@ class CMVTest {
     @Test 
     void initialTest() {
         assertTrue(true);
-
     }        
 
     @Test
@@ -45,6 +44,232 @@ class CMVTest {
         assertFalse(CMV.lic0(points, len));
     }
     
+    /**
+     * If {@code RADIUS1} is negative, lic1 should return false.
+     */
+    @Test
+    void lic1_negativeRadius_returnsFalse() {
+
+        Point[] points = {
+            new Point(0, 0),
+            new Point(1, 0),
+            new Point(0, 1)
+        };
+
+        assertFalse(CMV.lic1(points, -1.0));
+    }
+
+    /**
+     * If less than three points in input, lic1 should return false.
+     */
+    @Test
+    void lic1_lessThanThreePoints_returnsFalse() {
+        Point[] points = {
+            new Point(0, 0),
+            new Point(1, 0)
+        };
+
+        assertFalse(CMV.lic1(points, 1));
+    }
+
+    /**
+     * If three consecutive points create an Obtuse/Right triangle that cannot fitt incide a cirecle with {@code RADIUS1}, lic1 should return true.
+     */
+    @Test
+    void lic1_obtuseRightTriangleMinimumRadiusGreaterThanRADIUS1_returnsTrue() {
+        Point[] points = {
+            new Point(0, 0),
+            new Point(3, 0),
+            new Point(0, 4)
+        };
+
+        assertTrue(CMV.lic1(points, 2.0));
+    }
+
+    /**
+     * If three consecutive points create an Obtuse/Right triangle that creates a minimum radius that is equal to {@code RADIUS1}, lic1 should return false.
+     */
+    @Test
+    void lic1_obtuseRightTriangleMinimumRadiusEqualToRADIUS1_returnsFalse() {
+        Point[] points = {
+            new Point(0, 0),
+            new Point(3, 0),
+            new Point(0, 4)
+        };
+
+        assertFalse(CMV.lic1(points, 2.5));
+    }
+
+    /**
+     * If three consecutive points create an Obtuse/Right triangle that can fitt incide a cirecle with {@code RADIUS1}, lic1 should return false.
+     */
+    @Test
+    void lic1_obtuseRightTriangleMinimumRadiusSmallerThanRADIUS1_returnsFalse() {
+        Point[] points = {
+            new Point(0, 0),
+            new Point(3, 0),
+            new Point(0, 4)
+        };
+
+        assertFalse(CMV.lic1(points, 3.0));
+    }
+
+    /**
+     * If three consecutive points create an acute triangle that cannot fitt incide a cirecle with {@code RADIUS1}, lic1 should return true.
+     */
+    @Test
+    void lic1_acuteTriangleMinimumRadiusGreaterThanRADIUS1_returnsTrue() {
+        Point[] points = {
+            new Point(0, 0),
+            new Point(2, 0),
+            new Point(1, Math.sqrt(3))
+        };
+
+        assertTrue(CMV.lic1(points, 1.0));
+    }
+
+    /**
+     * If three consecutive points create an acute triangle that creates a minimum radius that is equal to {@code RADIUS1}, lic1 should return false.
+     */
+    @Test
+    void lic1_acuteTriangleMinimumRadiusEqualToRADIUS1_returnsFalse() {
+        Point[] points = {
+            new Point(0, 0),
+            new Point(2, 0),
+            new Point(1, Math.sqrt(3))
+        };
+
+        assertFalse(CMV.lic1(points, (2.0 / Math.sqrt(3))));
+    }
+
+    /**
+     * If three consecutive points create an acute triangle that can fitt incide a cirecle with {@code RADIUS1}, lic1 should return false.
+     */
+    @Test
+    void lic1_acuteTriangleMinimumRadiusSmallerThanRADIUS1_returnsFalse() {
+        Point[] points = {
+            new Point(0, 0),
+            new Point(2, 0),
+            new Point(1, Math.sqrt(3))
+        };
+
+        assertFalse(CMV.lic1(points, 1.3));
+    }
+
+    
+    /**
+     * If {@code EPSILON} is negative, lic1 should return false.
+     */
+    @Test
+    void lic2_negativeEPSILON_returnsFalse() {
+
+        Point[] points = {
+            new Point(0, 0),
+            new Point(1, 0),
+            new Point(0, 1)
+        };
+
+        assertFalse(CMV.lic2(points, -1.0, Parameters.PI));
+    }
+
+    /**
+     * If {@code EPSILON} is larger than {@code PI}, lic1 should return false.
+     */
+    @Test
+    void lic2_EPSILONBiggerThanPI_returnsFalse() {
+
+        Point[] points = {
+            new Point(0, 0),
+            new Point(1, 0),
+            new Point(0, 1)
+        };
+
+        assertFalse(CMV.lic2(points, 4.0, Parameters.PI));
+    }
+
+    /**
+     * If less than three points in input, lic2 should return false.
+     */
+    @Test
+    void lic2_lessThanThreePoints_returnsFalse() {
+        Point[] points = {
+            new Point(0, 0),
+            new Point(1, 0)
+        };
+
+        assertFalse(CMV.lic2(points, 1, Parameters.PI));
+    }
+
+    /**
+     * If the first point coincides with the vertex, lic2 should return false.
+     */
+    @Test
+    void lic2_firstPointEqualToVertex_returnsFalse() {
+        Point[] points = {
+            new Point(0, 0),
+            new Point(0, 0),
+            new Point(1, 0)
+        };
+
+        assertFalse(CMV.lic2(points, 1, Parameters.PI));
+    }
+
+    /**
+     * If the last point coincides with the vertex, lic2 should return false.
+     */
+    @Test
+    void lic2_lastPointEqualToVertex_returnsFalse() {
+        Point[] points = {
+            new Point(0, 0),
+            new Point(1, 0),
+            new Point(1, 0)
+        };
+
+        assertFalse(CMV.lic2(points, 1, Parameters.PI));
+    }
+
+    /**
+     * If both other points coincides with the vertex, lic2 should return false.
+     */
+    @Test
+    void lic2_bothPointsEqualToVertex_returnsFalse() {
+        Point[] points = {
+            new Point(1, 0),
+            new Point(1, 0),
+            new Point(1, 0)
+        };
+
+        assertFalse(CMV.lic2(points, 1, Parameters.PI));
+    }
+
+    /**
+     * If angle < {@code (PI − EPSILON)}, lic2 should return true.
+     */
+    @Test
+    void lic2_angleSmall_returnsTrue() {
+        Point[] points = {
+            new Point(1, 0),
+            new Point(0, 0),
+            new Point(0, 1)
+        };
+        
+        assertTrue(CMV.lic2(points, 0.5, Parameters.PI));
+    }
+
+    /**
+     * If angle > {@code (PI + EPSILON)}, lic2 should return true.
+     */
+    @Test
+    void lic2_angleLarge_returnsTrue() {
+        Point[] points = {
+            new Point(-1, -0.01),
+            new Point(0, 0), 
+            new Point(1, -0.01)
+        };
+
+        assertTrue(CMV.lic2(points, 0.0, Parameters.PI));
+    }
+
     /**
      * Negative test: If {@code AREA1} is negative, lic3 should return false.
      * Test case: Points (0, 0) → (1, 0) → (0, 1).
@@ -175,7 +400,7 @@ class CMVTest {
 
         assertFalse(CMV.lic3(points, 1));
     }
-
+    
     /**
      * If {@code Q_PTS} is less than 2, lic4 should return false.
      */
