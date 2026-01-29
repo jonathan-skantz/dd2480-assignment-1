@@ -14,7 +14,7 @@ public class CMV {
         cmv[5] = lic5(points);
         cmv[6] = lic6();
         cmv[7] = lic7(points, parameters.K_PTS, parameters.LENGTH1);
-        cmv[8] = lic8();
+        cmv[8] = lic8(points, parameters.A_PTS, parameters.B_PTS, parameters.RADIUS1);
         cmv[9] = lic9(points, parameters.C_PTS, parameters.D_PTS, parameters.EPSILON);
         cmv[10] = lic10();
         cmv[11] = lic11();
@@ -269,7 +269,54 @@ public class CMV {
         return false;
     }
 
-    public static boolean lic8() {return false;}
+    /**
+     * Checks if there exists at least one set of three data points separated by exactly {@code A_PTS} and {@code B_PTS}
+     * consecutive intervening points, respectively, that cannot be contained within or on a circle of
+     * radius {@code RADIUS1}. The condition is not met when {@code NUMPOINTS} < 5.
+     * 
+     * @param points the data points (coordinates)
+     * @param A_PTS No. of consecutive points
+     * @param B_PTS No. of consecutive points
+     * @param RADIUS1 radius to the circle
+     * @return {@code true} if the statement holds, {@code false} otherwise.}
+     */
+    public static Boolean lic8(Point[] points, int A_PTS, int B_PTS, double RADIUS1) {
+        int NUMPOINTS = points.length;
+
+        if (RADIUS1 < 0) return false;
+        if(NUMPOINTS < 5) return false; // The condition is not met when NUMPOINTS < 5
+        if(A_PTS < 1 || B_PTS < 1) return false; // (1 ≤ A_PTS, 1 ≤ B_PTS)
+        if(NUMPOINTS - 3 < A_PTS + B_PTS) return false; // (A_PTS + B_PTS ≤ (NUMPOINTS − 3))
+
+        for(int i = 0; i < NUMPOINTS - (A_PTS + B_PTS + 2); i++) {
+            Point A = points[i];
+            Point B = points[i + A_PTS + 1];
+            Point C = points[i + A_PTS + B_PTS + 2]; // i + (A_PTS + 1) + B_PTS + 1
+
+            double d1 = A.distance(B);
+            double d2 = B.distance(C);
+            double d3 = C.distance(A);
+
+            double[] arr = {d1, d2, d3};
+            double minRadius;
+            Arrays.sort(arr);
+
+            if (Math.pow(arr[2], 2) >= Math.pow(arr[1], 2) + Math.pow(arr[0], 2)) {
+                // Obtuse/Right triangle
+                minRadius = arr[2] / 2;
+            } else {
+                // Acute triangle
+                double s = (d1 + d2 + d3) / 2;
+                double area = Math.sqrt(s * (s - d1) * (s - d2) * (s - d3));
+                minRadius = (d1 * d2 * d3) / (4 * area);
+            }
+
+            if (minRadius > RADIUS1) return true; 
+        }
+
+        return false; // No trio that fits the requirements found
+    }
+
     /**
      * LIC 9: Angle < (PI - EPSILON) or > (PI + EPSILON) for 3 points separated by C_PTS, D_PTS
      * @param points Array of planar points (≥5 points required)
