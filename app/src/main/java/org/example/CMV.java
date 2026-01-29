@@ -3,10 +3,10 @@ import java.util.Arrays;
 
 public class CMV {
 
-    public static Boolean[] computeCMV(Point[] points, Parameters parameters) {
-        Boolean[] cmv = new Boolean[15];
+    public static boolean[] computeCMV(Point[] points, Parameters parameters) {
+        boolean[] cmv = new boolean[15];
 
-        cmv[0] = lic0();
+        cmv[0] = lic0(points, parameters.LENGTH1);
         cmv[1] = lic1();
         cmv[2] = lic2();
         cmv[3] = lic3(points, parameters.AREA1);
@@ -19,16 +19,29 @@ public class CMV {
         cmv[10] = lic10();
         cmv[11] = lic11();
         cmv[12] = lic12();
-        cmv[13] = lic13();
-        cmv[14] = lic14();
+        cmv[13] = lic13(points, parameters.A_PTS, parameters.B_PTS, parameters.RADIUS1, parameters.RADIUS2);
+        cmv[14] = lic14(points, parameters.E_PTS, parameters.F_PTS, parameters.AREA1, parameters.AREA2);
 
         return cmv;
     }
 
-    public static Boolean lic0() {return false;}
-    public static Boolean lic1() {return false;}
-    public static Boolean lic2() {return false;}
+    /**
+     * Returns whether at least one pair of consecutive data points is separated by a distance greater than {@code LENGTH1}.
+     * @param points the data points (coordinates)
+     * @param LENGTH1 The distance which two consecutive data points must be further apart than
+     * @return {@code true} if the condition is met, {@code false} otherwise
+     */
+    public static boolean lic0(Point[] points, double LENGTH1) {
+        for (int i = 0; i < points.length - 1; i++) {
+            if (points[i].distance(points[i+1]) > LENGTH1) {
+                return true;
+            }
+        }
+        return false;
+    }
 
+    public static boolean lic1() {return false;}
+    public static boolean lic2() {return false;}
     /**
      * Check if there exists one set of three consecutive data points that are the vertices of a triangle
      * with area greater than {@code AREA1}.
@@ -37,7 +50,7 @@ public class CMV {
      * @param AREA1 minimum allowed area of a triangle formed by three consecutive points
      * @return {@code true} if such a set of three consecutive points exists, {@code false} otherwise
      */
-    public static Boolean lic3(Point[] points, double AREA1) {
+    public static boolean lic3(Point[] points, double AREA1) {
         if(AREA1 < 0) return false; // Since (0 ≤ AREA1) should hold
         if(points.length < 3) return false;
 
@@ -70,7 +83,7 @@ public class CMV {
      * @param QUADS Minimum no. of quadrants which the consecutive points need to be in
      * @return {@code true} if the statement holds, {@code false} otherwise.}
      */
-    public static Boolean lic4(Point[] points, int Q_PTS, int QUADS) {
+    public static boolean lic4(Point[] points, int Q_PTS, int QUADS) {
         int NUMPOINTS = points.length;
 
         if(Q_PTS < 2 || NUMPOINTS < Q_PTS) return false; // (2 ≤ Q_PTS ≤ NUMPOINTS)
@@ -112,7 +125,7 @@ public class CMV {
      * @return true if there exists at least one index i where points[i+1].x < points[i].x;
      *         false otherwise
      */
-    public static Boolean lic5(Point[] points) {
+    public static boolean lic5(Point[] points) {
         if (points == null || points.length < 2) {
             return false;
         }
@@ -126,7 +139,7 @@ public class CMV {
         return false;
     }
   
-    public static Boolean lic6() {return false;}
+    public static boolean lic6() {return false;}
     
     /**
      * Checks for at least one pair of points separated by exactly K_PTS
@@ -137,7 +150,7 @@ public class CMV {
      * @param LENGTH1  the distance threshold, must be >= 0
      * @return true if such a pair exists, otherwise false or on invalid input
      */
-    public static Boolean lic7(Point[] points, int K_PTS, double LENGTH1) {
+    public static boolean lic7(Point[] points, int K_PTS, double LENGTH1) {
         if (points == null) {
             return false;
         }
@@ -216,13 +229,99 @@ public class CMV {
         return false; // No trio that fits the requirements found
     }
 
+    public static boolean lic9() {return false;}
+    public static boolean lic10() {return false;}
+    public static boolean lic11() {return false;}
+    public static boolean lic12() {return false;}
+    
+    /**
+     * Checks if there exists at least one set of three data points, separated by exactly {@code A_PTS} 
+     * and {@code B_PTS} consecutive intervening points, respectively, that cannot be contained within 
+     * or on a circle of radius {@code RADIUS1}. In addition, there must exist at least one set of three 
+     * data points (which can be the same or different from the first set) separated by exactly 
+     * {@code A_PTS} and {@code B_PTS} consecutive intervening points, respectively, that can be 
+     * contained within or on a circle of radius {@code RADIUS2}.
+     * 
+     * @param points the data points (coordinates)
+     * @param A_PTS number of intervening points between the 1st and 2nd point
+     * @param B_PTS number of intervening points between the 2nd and 3rd point
+     * @param RADIUS1 the radius used for the "cannot fit" requirement
+     * @param RADIUS2 the radius used for the "can fit" requirement
+     * @return {@code true} if both requirements are met, {@code false} otherwise
+     */
+    public static Boolean lic13(Point[] points, int A_PTS, int B_PTS, double RADIUS1, double RADIUS2) {
+        int NUMPOINTS = points.length;
+        if(NUMPOINTS < 5) return false; // The condition is not met when NUMPOINTS < 5
+        if(RADIUS2 < 0) return false;   // 0 ≤ RADIUS2
 
-    public static Boolean lic9() {return false;}
-    public static Boolean lic10() {return false;}
-    public static Boolean lic11() {return false;}
-    public static Boolean lic12() {return false;}
-    public static Boolean lic13() {return false;}
-    public static Boolean lic14() {return false;}
+        boolean existsCannotFitRadius1 = false;
+        boolean existsCanFitRadius2 = false;
+        for(int i = 0; i + A_PTS + 1 + B_PTS + 1 < NUMPOINTS; i++) {
+            int j = i + A_PTS + 1;
+            int k = j + B_PTS + 1;
+            Point A = points[i];
+            Point B = points[j];
+            Point C = points[k];
 
+            double min_radius = Point.minEnclosingRadius(A, B, C);
+            
+            // If a set of three points that cannot be contained within or on a circle of radius RADIUS1 is found
+            if(min_radius > RADIUS1) existsCannotFitRadius1 = true;
+
+            // If a set of three points that can be contained within or on a circle of radius RADIUS2 is found
+            if(min_radius <= RADIUS2) existsCanFitRadius2 = true;
+        }
+
+        return existsCannotFitRadius1 && existsCanFitRadius2;
+    }
+  
+    /**
+     * Checks two conditions:
+     *     1. Whether the area of some triangle is greater than {@code AREA1}.
+     *     2. Whether the area of some triangle is smaller than {@code AREA2}.
+     * 
+     * The triangle may be different in the two conditions, but the points A, B, C that
+     * form the triangle must achieve two conditions:
+     *     1. There must be exactly E_PTS points between A and B.
+     *     2. There must be exactly F_PTS points between B and C.
+     * 
+     * @param points data points
+     * @param E_PTS number of points between A and B (not including A nor B)
+     * @param F_PTS number of points between B and C (not including B nor C)
+     * @param AREA1 area which the triangle must be greater than
+     * @param AREA2 area which the triangle must be smaller than
+     * @return {@code true} if the two conditions are met, {@code false} otherwise
+     */
+    public static boolean lic14(Point[] points, int E_PTS, int F_PTS, double AREA1, double AREA2) {
+        if (points.length < 5 || AREA2 < 0) {
+            return false;
+        }
+        
+        boolean isGreaterThanAREA1 = false;
+        boolean isSmallerThanAREA2 = false;
+
+        // Break condition: The largest index (used for point C) cannot exceed the last index of `points`.
+        for (int i = 0; i + E_PTS + F_PTS + 2 < points.length; i++) {
+            Point A = points[i];
+            Point B = points[i + E_PTS + 1];    // Points i+1, i+2, ..., i+E_PTS must be ignored.
+            Point C = points[i + E_PTS + 1 + F_PTS + 1];    // Next F_PTS must be ignored.
+                
+            // Calculate the area of the triangle formed by ABC using Heron's formula.
+            double lengthAB = A.distance(B);
+            double lengthAC = A.distance(C);
+            double lengthBC = B.distance(C);
+            
+            double s = 0.5 * (lengthAB + lengthAC + lengthBC);      // `s` for semiperimeter (half of perimeter)
+            double triangleArea = Math.sqrt(s * (s - lengthAB) * (s - lengthAC) * (s - lengthBC));
+
+            if (triangleArea > AREA1) {
+                isGreaterThanAREA1 = true;
+            }
+            if (triangleArea < AREA2) {
+                isSmallerThanAREA2 = true;
+            }
+        }
+        return isGreaterThanAREA1 && isSmallerThanAREA2;
+    }
 
 }
