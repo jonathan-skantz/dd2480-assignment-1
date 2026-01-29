@@ -40,40 +40,6 @@ public class CMV {
     }
 
     public static boolean lic1() {return false;}
-    public static boolean lic2() {return false;}
-    /**
-     * Check if there exists one set of three consecutive data points that are the vertices of a triangle
-     * with area greater than {@code AREA1}.
-     * 
-     * @param points the data points (coordinates)
-     * @param AREA1 minimum allowed area of a triangle formed by three consecutive points
-     * @return {@code true} if such a set of three consecutive points exists, {@code false} otherwise
-     */
-    public static boolean lic3(Point[] points, double AREA1) {
-        if(AREA1 < 0) return false; // Since (0 ≤ AREA1) should hold
-        if(points.length < 3) return false;
-
-        // Iteratively check sets of three consequtive points
-        for(int i = 0; i < points.length - 2; i++) {
-            Point A = points[i];
-            Point B = points[i + 1];
-            Point C = points[i + 2];
-
-            // Can't be triangle if two points are the same
-            if(A.areTheSame(B) || A.areTheSame(C) || B.areTheSame(C)) {
-                continue;
-            }
-            
-            // Shoelace formula for area of triangle
-            double area = 0.5*Math.abs(A.x*(B.y-C.y) + B.x*(C.y-A.y) + C.x*(A.y-B.y));
-
-            if(area > AREA1) return true;
-        }
-
-        return false;
-    }
-    public static Boolean lic0() {return false;}
-    public static Boolean lic1() {return false;}
 
     /**
      * There exists at least one set of three consecutive data points which form an angle such that:
@@ -121,7 +87,37 @@ public class CMV {
         return false; // No such trio of points excist
     }
 
-    public static Boolean lic3() {return false;}
+    /**
+     * Check if there exists one set of three consecutive data points that are the vertices of a triangle
+     * with area greater than {@code AREA1}.
+     * 
+     * @param points the data points (coordinates)
+     * @param AREA1 minimum allowed area of a triangle formed by three consecutive points
+     * @return {@code true} if such a set of three consecutive points exists, {@code false} otherwise
+     */
+    public static boolean lic3(Point[] points, double AREA1) {
+        if(AREA1 < 0) return false; // Since (0 ≤ AREA1) should hold
+        if(points.length < 3) return false;
+
+        // Iteratively check sets of three consequtive points
+        for(int i = 0; i < points.length - 2; i++) {
+            Point A = points[i];
+            Point B = points[i + 1];
+            Point C = points[i + 2];
+
+            // Can't be triangle if two points are the same
+            if(A.areTheSame(B) || A.areTheSame(C) || B.areTheSame(C)) {
+                continue;
+            }
+            
+            // Shoelace formula for area of triangle
+            double area = 0.5*Math.abs(A.x*(B.y-C.y) + B.x*(C.y-A.y) + C.x*(A.y-B.y));
+
+            if(area > AREA1) return true;
+        }
+
+        return false;
+    }
 
     /**
      * Checks if there exists at least one set of {@code Q_PTS} consecutive data points that lie in more than {@code QUADS} quadrants.
