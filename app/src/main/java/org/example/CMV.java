@@ -48,13 +48,14 @@ public class CMV {
         if(points.length < 5) return false;
         int i = 0;
         for (Point A : points) {
-            if(i + E_PTS + F_PTS + 2 < points.length) {
-                Point B = points[i + E_PTS + 1];
-                Point C = points[i + E_PTS + F_PTS + 2];
-                double area = Math.abs(0.5 * (A.x * (B.y - C.y) + B.x * (C.y - A.y) + C.x * (A.y - B.y)));
-                if(area > AREA1) {
-                    return true;
-                }
+            if(i + E_PTS + F_PTS + 2 >= points.length) {
+                break;
+            }
+            Point B = points[i + E_PTS + 1];
+            Point C = points[i + E_PTS + F_PTS + 2];
+            double area = Math.abs(0.5 * (A.x * (B.y - C.y) + B.x * (C.y - A.y) + C.x * (A.y - B.y)));
+            if(area > AREA1) {
+                return true;
             }
             i = i + 1;
         }
