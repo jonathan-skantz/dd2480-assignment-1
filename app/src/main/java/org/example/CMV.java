@@ -40,10 +40,6 @@ public class CMV {
         return false;
     }
 
-    public static boolean lic1() {return false;}
-    public static boolean lic2() {return false;}
-    public static Boolean lic0() {return false;}
-
     /**
      * Returns if at least three consecutive data points is does not fitt into a circle with radius {@code Radius1}.
      * @param points the data points (coordinates)
