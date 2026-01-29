@@ -54,15 +54,16 @@ public class CMV {
         if(points.length < 3) {return false;}
 
         for (Point A : points) {
-            if(i + K_PTS + 1 < points.length) {
-                Point B = points[i + K_PTS + 1];
-                double distance = A.distance(B);
-                if(distance > LENGTH1) {
-                    condition_1 = true;
-                }
-                if(distance < LENGTH2) {
-                    condition_2 = true;
-                }
+            if(i + K_PTS + 1 >= points.length) {
+                break;
+            }
+            Point B = points[i + K_PTS + 1];
+            double distance = A.distance(B);
+            if(distance > LENGTH1) {
+                condition_1 = true;
+            }
+            if(distance < LENGTH2) {
+                condition_2 = true;
             }
             i += 1;
         }
