@@ -959,7 +959,9 @@ class CMVTest {
     }
   
     /**
-     * If the longest distance between two points in a set of three is 2, {@code minEnclosingRadius} should return 1;
+     * Positive test: If the longest distance between two points in a set of three is 2, {@code minEnclosingRadius} should return 1;
+     * Test case: (0, 0) → (0, 2) → (1, 1)
+     * Expected: 1, since the triangle is right angle and the longest side has length 2. 
      */
     @Test
     void minEnclosingRadius_longestDistanceIs2_returns1() {
@@ -971,7 +973,9 @@ class CMVTest {
     }
 
     /**
-     * If all points are the same, {@code minEnclosingRadius} should return 0.
+     * Positive test: If all points are the same, {@code minEnclosingRadius} should return 0.
+     * Test case: (0, 0) → (0, 0) → (0, 0)
+     * Expected: 0, since all the points are the same.
      */
     @Test
     void minEnclosingRadius_allPointsAreTheSame_returnsZero(){
@@ -983,7 +987,9 @@ class CMVTest {
     }
 
     /**
-     * If two points are the same, {@code minEnclosingRadius} should return half the length of the longest distance.
+     * Positive test: If two points are the same, {@code minEnclosingRadius} should return half the length of the longest distance.
+     * Test case: (0, 0) → (0, 0) → (2, 0)
+     * Expected: 1, since the first two points are the same and the distance between these points and the third point is 2.
      */
     @Test
     void minEnclosingRadius_twoPointsAreTheSame_returnsHalfOfLongestDistance() {
@@ -995,7 +1001,9 @@ class CMVTest {
     }
 
     /**
-     * If the three points form a right angle triangle, the function should return half of the longest distance.
+     * Positive test: If the three points form a right angle triangle, the function should return half of the longest distance.
+     * Test case: (0, 0) → (1, 0) → (0, 1)
+     * Expected: sqrt(2) / 2, since the triangle is right angle and its longest side is sqrt(2).
      */
     @Test
     void minEnclosingRadius_triangleIsRight_returnsHalfLongestDistance() {
@@ -1010,7 +1018,9 @@ class CMVTest {
 
 
     /**
-     * If the three points form an obtuse triangle, the function should return half of the longest distance.
+     * Positive test: If the three points form an obtuse triangle, the function should return half of the longest distance.
+     * Test case: (0, 0) → (4, 0) → (1, 1)
+     * Expected: 2, since the triangle is obtuse and its longest side is of length 4.
      */
     @Test
     void minEnclosingRadius_triangleIsObtuse_returnsHalfLongestDistance() {
@@ -1022,7 +1032,9 @@ class CMVTest {
     }
 
     /**
-     * If the three points form an acute triangle, the function should return the radius of its circumcircle.
+     * Positive test: If the three points form an acute triangle, the function should return the radius of its circumcircle.
+     * Test case: (0, 0) → (2, 0) → (1, sqrt(3))
+     * Expected: 2 / sqrt(3), since the points form an acute triangle with side length 2.
      */
     @Test
     void minEnclosingRadius_triangleIsAcute_returnsRadiusOfCircumcircle() {
