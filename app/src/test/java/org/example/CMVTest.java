@@ -11,8 +11,14 @@ class CMVTest {
         assertTrue(true);
     }        
 
+    /**
+     * Negative test: If all consecutive points are exactly {@code LENGTH1} apart,
+     * LIC0 should return false.
+     * Test case: Points (0,0) → (5,0) → (10,0), LENGTH1 = 5
+     * Expected: false, since all consecutive distances are exactly {@code LENGTH1}.
+     */
     @Test
-    void lic0_noConsecutivePointsSeparatedByMoreThanLENGTH1_returnsFalse() {
+    void lic0_allDistancesEqualToLENGTH1_returnsFalse() {
         Point[] points = {
             new Point(0, 0),
             new Point(5, 0),
@@ -24,6 +30,12 @@ class CMVTest {
         assertFalse(CMV.lic0(points, LENGTH1));
     }
 
+    /**
+     * Positive test: If at least one pair of consecutive points is separated by more than {@code LENGTH1},
+     * LIC0 should return true.
+     * Test case: Points (5,0) → (0,0) → (10,0) with LENGTH1 = 5
+     * Expected: true, since distance between (0,0) and (10,0) is greater than {@code LENGTH1}.
+     */
     @Test
     void lic0_twoConsecutivePointsSeparatedByMoreThanLENGTH1_returnsTrue() {
         Point[] points = {
@@ -37,6 +49,11 @@ class CMVTest {
         assertTrue(CMV.lic0(points, LENGTH1));
     }
 
+    /**
+     * Negative test: If the input contains no points, LIC0 should return false.
+     * Test case: Empty point array, LENGTH1 = 5
+     * Expected: false, since there are no consecutive points to compare.
+     */
     @Test
     void lic0_emptyInput_returnsFalse() {
         Point[] points = {};
@@ -44,6 +61,20 @@ class CMVTest {
         assertFalse(CMV.lic0(points, len));
     }
     
+    /**
+     * Negative test: If only one point is provided, LIC0 should return false.
+     * Test case: Point (0,0) with LENGTH1 = 5
+     * Expected: false, since there are no consecutive points to compare.
+     */
+    @Test
+    void lic0_singlePoint_returnsFalse() {
+        Point[] points = {
+            new Point(0, 0)
+        };
+        double LENGTH1 = 5;
+        assertFalse(CMV.lic0(points, LENGTH1));
+    }
+
     /**
      * Defensive test: LIC1 should return false when RADIUS1 is negative.
      * lic1 should return false.
