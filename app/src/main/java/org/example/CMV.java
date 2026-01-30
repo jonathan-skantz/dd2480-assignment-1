@@ -120,7 +120,7 @@ public class CMV {
             double v2y = C.y - B.y;
 
             // Check if angle is undefined
-            if(B.areTheSame(A) || B.areTheSame(C)) continue;
+            if(B.equals(A) || B.equals(C)) continue;
             
             double dotProduct = (v1x * v2x) + (v1y * v2y);
             double magnitudeV1 = Math.sqrt(Math.pow(v1x, 2) + Math.pow(v1y, 2));
@@ -155,7 +155,7 @@ public class CMV {
             Point C = points[i + 2];
 
             // Can't be triangle if two points are the same
-            if(A.areTheSame(B) || A.areTheSame(C) || B.areTheSame(C)) {
+            if(A.equals(B) || A.equals(C) || B.equals(C)) {
                 continue;
             }
             
@@ -342,7 +342,7 @@ public class CMV {
             Point B = points[i + C_PTS + 1];
             Point C = points[i + C_PTS + D_PTS + 2];
 
-            if(!A.areTheSame(B) && !C.areTheSame(B)) {
+            if(!A.equals(B) && !C.equals(B)) {
 
                 double BAx = A.x - B.x;
                 double BAy = A.y - B.y;
