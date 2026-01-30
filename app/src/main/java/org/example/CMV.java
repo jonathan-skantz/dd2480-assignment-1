@@ -21,7 +21,7 @@ public class CMV {
         cmv[7] = lic7(points, parameters.K_PTS, parameters.LENGTH1);
         cmv[8] = lic8(points, parameters.A_PTS, parameters.B_PTS, parameters.RADIUS1);
         cmv[9] = lic9(points, parameters.C_PTS, parameters.D_PTS, parameters.EPSILON);
-        cmv[10] = lic10();
+        cmv[10] = lic10(points, parameters.E_PTS, parameters.F_PTS, parameters.AREA1);
         cmv[11] = lic11(points, parameters.G_PTS);
         cmv[12] = lic12();
         cmv[13] = lic13(points, parameters.A_PTS, parameters.B_PTS, parameters.RADIUS1, parameters.RADIUS2);
@@ -29,8 +29,6 @@ public class CMV {
 
         return cmv;
     }
-
-
 
     /**
      * Returns whether at least one pair of consecutive data points is separated by a distance greater than {@code LENGTH1}.
@@ -355,7 +353,31 @@ public class CMV {
     }
 
 
-    public static boolean lic10() {return false;}
+    /**
+     * LIC 10: area > AREA1 for three data points separated by exactly E PTS and F PTS
+     * @param points Array of planar points (≥5 points required)
+     * @param E_PTS The number of consecutive intervening points between the first point and the second point of the triangle
+     * @param F_PTS The number of consecutive intervening points between the second point and the third point of the triangle
+     * @param AREA1 The threshold area for the condition
+     * @return true if condition is met
+     * */
+    public static Boolean lic10(Point[] points, int E_PTS, int F_PTS, double AREA1) {
+        if(points.length < 5) return false;
+        int i = 0;
+        for (Point A : points) {
+            if(i + E_PTS + F_PTS + 2 >= points.length) {
+                break;
+            }
+            Point B = points[i + E_PTS + 1];
+            Point C = points[i + E_PTS + F_PTS + 2];
+            double area = Math.abs(0.5 * (A.x * (B.y - C.y) + B.x * (C.y - A.y) + C.x * (A.y - B.y)));
+            if(area > AREA1) {
+                return true;
+            }
+            i = i + 1;
+        }
+        return false;
+    }
 
    /**
      * Checks if there exists at least one pair of data points separated by exactly
