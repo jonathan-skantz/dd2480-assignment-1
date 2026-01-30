@@ -281,23 +281,7 @@ public class CMV {
             Point B = points[i + A_PTS + 1];
             Point C = points[i + A_PTS + B_PTS + 2]; // i + (A_PTS + 1) + B_PTS + 1
 
-            double d1 = A.distance(B);
-            double d2 = B.distance(C);
-            double d3 = C.distance(A);
-
-            double[] arr = {d1, d2, d3};
-            double minRadius;
-            Arrays.sort(arr);
-
-            if (Math.pow(arr[2], 2) >= Math.pow(arr[1], 2) + Math.pow(arr[0], 2)) {
-                // Obtuse/Right triangle
-                minRadius = arr[2] / 2;
-            } else {
-                // Acute triangle
-                double s = (d1 + d2 + d3) / 2;
-                double area = Math.sqrt(s * (s - d1) * (s - d2) * (s - d3));
-                minRadius = (d1 * d2 * d3) / (4 * area);
-            }
+            double minRadius = Point.minEnclosingRadius(A, B, C);
 
             if (minRadius > RADIUS1) return true; 
         }
