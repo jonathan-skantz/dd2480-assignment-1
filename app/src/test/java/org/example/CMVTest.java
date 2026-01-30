@@ -158,7 +158,10 @@ class CMVTest {
 
     
     /**
-     * If {@code EPSILON} is negative, lic1 should return false.
+     * Defensive test: LIC2 should return false when EPSILON is negative.
+     * lic2 should return false.
+     * Test case: Points (0,0), (1,0), (0,1) with EPSILON = -1.0 and PI = π.
+     * Expected: false (invalid EPSILON).
      */
     @Test
     void lic2_negativeEPSILON_returnsFalse() {
@@ -173,7 +176,10 @@ class CMVTest {
     }
 
     /**
-     * If {@code EPSILON} is larger than {@code PI}, lic1 should return false.
+     * Defensive test: LIC2 should return false when EPSILON is greater than PI.
+     * lic2 should return false.
+     * Test case: Points (0,0), (1,0), (0,1) with EPSILON = 4.0 and PI = π.
+     * Expected: false (EPSILON must be in the range [0, PI)).
      */
     @Test
     void lic2_EPSILONBiggerThanPI_returnsFalse() {
@@ -188,7 +194,10 @@ class CMVTest {
     }
 
     /**
-     * If less than three points in input, lic2 should return false.
+     * Defensive test: LIC2 should return false when fewer than three points are provided.
+     * lic2 should return false.
+     * Test case: Points (0,0), (1,0) with EPSILON = 1.0 and PI = π.
+     * Expected: false (not enough points to form an angle).
      */
     @Test
     void lic2_lessThanThreePoints_returnsFalse() {
@@ -201,7 +210,10 @@ class CMVTest {
     }
 
     /**
-     * If the first point coincides with the vertex, lic2 should return false.
+     * Defensive test: LIC2 should return false when the first point coincides with the vertex.
+     * lic2 should return false.
+     * Test case: Points (0,0), (0,0), (1,0) with EPSILON = 1.0 and PI = π.
+     * Expected: false (angle cannot be computed).
      */
     @Test
     void lic2_firstPointEqualToVertex_returnsFalse() {
@@ -215,7 +227,10 @@ class CMVTest {
     }
 
     /**
-     * If the last point coincides with the vertex, lic2 should return false.
+     * Defensive test: LIC2 should return false when the last point coincides with the vertex.
+     * lic2 should return false.
+     * Test case: Points (0,0), (1,0), (1,0) with EPSILON = 1.0 and PI = π.
+     * Expected: false (angle cannot be computed).
      */
     @Test
     void lic2_lastPointEqualToVertex_returnsFalse() {
@@ -229,7 +244,10 @@ class CMVTest {
     }
 
     /**
-     * If both other points coincides with the vertex, lic2 should return false.
+     * Defensive test: LIC2 should return false when both outer points coincide with the vertex.
+     * lic2 should return false.
+     * Test case: Points (1,0), (1,0), (1,0) with EPSILON = 1.0 and PI = π.
+     * Expected: false (all points coincide).
      */
     @Test
     void lic2_bothPointsEqualToVertex_returnsFalse() {
@@ -243,7 +261,11 @@ class CMVTest {
     }
 
     /**
-     * If angle < {@code (PI − EPSILON)}, lic2 should return true.
+     * Positive test: LIC2 should return true when the angle formed by three consecutive
+     * points is less than (PI − EPSILON).
+     * lic2 should return true.
+     * Test case: Points (1,0), (0,0), (0,1) with EPSILON = 0.5 and PI = π.
+     * Expected: true (angle = 90°, which is < π − 0.5).
      */
     @Test
     void lic2_angleSmall_returnsTrue() {
@@ -257,7 +279,11 @@ class CMVTest {
     }
 
     /**
-     * If angle > {@code (PI + EPSILON)}, lic2 should return true.
+     * Positive test: LIC2 should return true when the angle formed by three consecutive
+     * points is greater than (PI + EPSILON).
+     * lic2 should return true.
+     * Test case: Points (-1,-0.01), (0,0), (1,-0.01) with EPSILON = 0.0 and PI = π.
+     * Expected: true (angle is slightly greater than π).
      */
     @Test
     void lic2_angleLarge_returnsTrue() {
