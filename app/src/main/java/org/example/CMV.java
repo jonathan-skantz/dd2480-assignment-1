@@ -37,6 +37,13 @@ public class CMV {
      * @return {@code true} if the condition is met, {@code false} otherwise
      */
     public static boolean lic0(Point[] points, double LENGTH1) {
+        if (points.length < 2) {
+            return false;
+        }
+        if (LENGTH1 < 0) {
+            return false;
+        }
+        
         for (int i = 0; i < points.length - 1; i++) {
             if (points[i].distance(points[i+1]) > LENGTH1) {
                 return true;
