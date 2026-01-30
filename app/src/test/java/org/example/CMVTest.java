@@ -1477,6 +1477,11 @@ class CMVTest {
         assertTrue(CMV.lic13(points, A_PTS, B_PTS, RADIUS1, RADIUS2), "lic13 should return true if there exists a triplet which can not be contained by RADIUS1 and a triplet exists whihc can be contained by RADIUS2.");
     }
 
+    /**
+     * Negative test: If {@code AREA2} is negative, LIC14 should return false.
+     * Test case: Five points with AREA1 = 1.0 and AREA2 = -1.0.
+     * Expected: false, since {@code AREA2} must be non-negative.
+     */
     @Test
     void lic14_negativeAREA2_returnsFalse() {
         Point[] points = {
@@ -1490,11 +1495,16 @@ class CMVTest {
         assertFalse(CMV.lic14(points, 1, 1, 1.0, -1.0));
     }
 
+    /**
+     * Negative test: If fewer than five points are provided, LIC14 should return false.
+     * Test case: Four points with AREA1 = 1.0 and AREA2 = 2.0.
+     * Expected: false, since there are not enough points to form valid triplets.
+     */
     @Test
     void lic14_lessThanFivePoints_returnsFalse() {
         Point[] points = {
             new Point(0, 0),
-            new Point(1, 0),
+            new Point(0, 1),
             new Point(2, 0),
             new Point(3, 0)
         };
@@ -1504,11 +1514,12 @@ class CMVTest {
     }
 
     /**
-     * Expected: true, because 0 intervening points is still valid
-     * (points A and B are immediate neighbors)
+     * Positive test: If {@code E_PTS = 0}, consecutive points are still valid.
+     * Test case: Five points with E_PTS = 0, F_PTS = 1.
+     * Expected: true, since zero intervening points between A and B is allowed.
      */
     @Test
-    void lic14_invalidE_PTS_returnsTrue() {
+    void lic14_noE_PTS_returnsTrue() {
         Point[] points = {
             new Point(0, 5),
             new Point(1, 3),
@@ -1521,11 +1532,12 @@ class CMVTest {
     }
 
     /**
-     * Expected: true, because 0 intervening points is still valid
-     * (points B and C are immediate neighbors)
+     * Positive test: If {@code F_PTS = 0}, consecutive points are still valid.
+     * Test case: Five points with E_PTS = 1, F_PTS = 0.
+     * Expected: true, since zero intervening points between B and C is allowed.
      */
     @Test
-    void lic14_F_PTSis0_returnsTrue() {
+    void lic14_noF_PTS_returnsTrue() {
         Point[] points = {
             new Point(0, 5),
             new Point(1, 3),
@@ -1537,6 +1549,12 @@ class CMVTest {
         assertTrue(CMV.lic14(points, 1, 0, 1.0, 2.0));
     }
 
+    /**
+     * Negative test: If {@code E_PTS} and {@code F_PTS} are too large to form valid triplets,
+     * LIC14 should return false.
+     * Test case: Five points with E_PTS = 3 and F_PTS = 4.
+     * Expected: false, since no valid A-B-C triplet can be formed.
+     */
     @Test
     void lic14_E_PTSandF_PTStooLarge_returnsFalse() {
         Point[] points = {
@@ -1551,9 +1569,10 @@ class CMVTest {
     }
 
     /**
-     * The area formed by the three points (0,0), (0,2), (4,0) should be
-     * between 1.0 and 10.0.
-     * Expected: true, because the true area is 4.
+     * Positive test: If one triplet has an area strictly between {@code AREA1} and {@code AREA2},
+     * LIC14 should return true.
+     * Test case: Points (0,0), (0,2), (4,0) with AREA1 = 1.0 and AREA2 = 10.0.
+     * Expected: true, since the triangle area is 4, which lies within the valid range.
      */
     @Test
     void lic14_validBothConditions_returnsTrue() {
@@ -1569,8 +1588,9 @@ class CMVTest {
     }
     
     /**
-     * All points are on the same line.
-     * Expected: false, since the area is 0.
+     * Negative test: If all points lie on a single straight line, LIC14 should return false.
+     * Test case: Five collinear points with AREA1 = 0.5 and AREA2 = 2.0.
+     * Expected: false, since the triangle area is 0.
      */
     @Test
     void lic14_allPointsOnOneLine_returnsFalse() {
