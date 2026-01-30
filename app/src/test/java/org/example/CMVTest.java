@@ -659,6 +659,7 @@ class CMVTest {
         * Test case: Points (3, 0) → (4, 2) → (1, 5) → (2, 1).
         * Expected: true because 1 < 4 between the second and third points.
      */
+    @Test
     void lic5_xDecreasesBetweenConsecutivePoints_returnsTrue() {
         Point[] points = {
             new Point(3, 0),
