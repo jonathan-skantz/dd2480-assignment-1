@@ -1,5 +1,4 @@
 package org.example;
-import java.util.Arrays;
 
 public class CMV {
 
@@ -18,19 +17,18 @@ public class CMV {
         cmv[3] = lic3(points, parameters.AREA1);
         cmv[4] = lic4(points, parameters.Q_PTS, parameters.QUADS);
         cmv[5] = lic5(points);
-        cmv[6] = lic6();
+        cmv[6] = lic6(points, parameters.N_PTS, parameters.DIST);
         cmv[7] = lic7(points, parameters.K_PTS, parameters.LENGTH1);
         cmv[8] = lic8(points, parameters.A_PTS, parameters.B_PTS, parameters.RADIUS1);
         cmv[9] = lic9(points, parameters.C_PTS, parameters.D_PTS, parameters.EPSILON);
-        cmv[10] = lic10();
-        cmv[11] = lic11();
-        cmv[12] = lic12();
+        cmv[10] = lic10(points, parameters.E_PTS, parameters.F_PTS, parameters.AREA1);
+        cmv[11] = lic11(points, parameters.G_PTS);
+        cmv[12] = lic12(points, parameters.K_PTS, parameters.LENGTH1, parameters.LENGTH2);
         cmv[13] = lic13(points, parameters.A_PTS, parameters.B_PTS, parameters.RADIUS1, parameters.RADIUS2);
         cmv[14] = lic14(points, parameters.E_PTS, parameters.F_PTS, parameters.AREA1, parameters.AREA2);
 
         return cmv;
     }
-
 
     /**
      * Returns whether at least one pair of consecutive data points is separated by a distance greater than {@code LENGTH1}.
@@ -64,23 +62,7 @@ public class CMV {
             Point B = points[i + 1];
             Point C = points[i + 2];
 
-            double d1 = A.distance(B);
-            double d2 = B.distance(C);
-            double d3 = C.distance(A);
-
-            double[] arr = {d1, d2, d3};
-            double minRadius;
-            Arrays.sort(arr);
-
-            if (Math.pow(arr[2], 2) >= Math.pow(arr[1], 2) + Math.pow(arr[0], 2)) {
-                // Obtuse/Right triangle
-                minRadius = arr[2] / 2;
-            } else {
-                // Acute triangle
-                double s = (d1 + d2 + d3) / 2;
-                double area = Math.sqrt(s * (s - d1) * (s - d2) * (s - d3));
-                minRadius = (d1 * d2 * d3) / (4 * area);
-            }
+            double minRadius = Point.minEnclosingRadius(A, B, C);
 
             if (minRadius > RADIUS1) return true; 
         }
@@ -120,7 +102,7 @@ public class CMV {
             double v2y = C.y - B.y;
 
             // Check if angle is undefined
-            if(B.areTheSame(A) || B.areTheSame(C)) continue;
+            if(B.equals(A) || B.equals(C)) continue;
             
             double dotProduct = (v1x * v2x) + (v1y * v2y);
             double magnitudeV1 = Math.sqrt(Math.pow(v1x, 2) + Math.pow(v1y, 2));
@@ -155,7 +137,7 @@ public class CMV {
             Point C = points[i + 2];
 
             // Can't be triangle if two points are the same
-            if(A.areTheSame(B) || A.areTheSame(C) || B.areTheSame(C)) {
+            if(A.equals(B) || A.equals(C) || B.equals(C)) {
                 continue;
             }
             
@@ -232,8 +214,75 @@ public class CMV {
         
         return false;
     }
-  
-    public static boolean lic6() {return false;}
+
+    /**
+     * Given {@code N_PTS} consecutive points, we draw a line (AZ) between the first (A) and last (Z) point.
+     * For every consecutive point B between A and Z, we compare the perpendicular distance between B and AZ.
+     * If A and Z are the same point, we instead compare the distance between B and A.
+     * @param points data points
+     * @param N_PTS number of consecutive points from A to Z (including both end points)
+     * @param DIST the distance which at least one point between A and B must be from AZ
+     * @return {@code true} if the distance is large enough, {@code false} otherwise
+     */
+    public static boolean lic6(Point[] points, int N_PTS, double DIST) {
+        if (N_PTS < 3 || N_PTS > points.length) {
+            return false;
+        }
+        if (DIST < 0) {
+            return false;
+        }
+
+        // NOTE: i cannot grow so that lastIndex becomes greater than points.length-1
+        for (int i = 0; i <= points.length - N_PTS; i++) {
+            int lastIndex = i + N_PTS - 1;
+            Point A = points[i];
+            Point Z = points[lastIndex];
+
+            // Case 1: A == Z
+            if (A.equals(Z)) {
+                for (int j = i + 1; j < lastIndex; j++) {
+                    Point B = points[j];
+                    if (B.distance(A) > DIST) {
+                        return true;
+                    }
+                }
+            }
+            // Case 2: A != Z
+            else {
+                /*
+                Given first and last points (A and Z) and point in-between (B):
+                    1. Project AB onto AZ:
+                        proj_(AZ)AB = (AB dot AZ) / (AZ dot AZ) * AZ
+
+                    2. Compute the vector v from B to the line formed by AZ:
+                        v = proj_(AZ)AB - AB
+                    
+                    3. The (perpendicular) distance is the magnitude of v:
+                        d = |v|
+                */
+                Point AZ = A.vectorTo(Z);
+
+                // Cannot project onto the 0 vector.
+                if (AZ.magnitude() == 0) {
+                    continue;
+                }
+
+                // Check points that are consecutive between A and Z
+                for (int j = i + 1; j < lastIndex; j++) {
+                    Point B = points[j];
+                    Point AB = A.vectorTo(B);
+
+                    Point proj = AB.projectOnto(AZ);
+                    Point v = proj.subtract(AB);
+
+                    if (v.magnitude() > DIST) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
     
     /**
      * Checks for at least one pair of points separated by exactly K_PTS
@@ -299,23 +348,7 @@ public class CMV {
             Point B = points[i + A_PTS + 1];
             Point C = points[i + A_PTS + B_PTS + 2]; // i + (A_PTS + 1) + B_PTS + 1
 
-            double d1 = A.distance(B);
-            double d2 = B.distance(C);
-            double d3 = C.distance(A);
-
-            double[] arr = {d1, d2, d3};
-            double minRadius;
-            Arrays.sort(arr);
-
-            if (Math.pow(arr[2], 2) >= Math.pow(arr[1], 2) + Math.pow(arr[0], 2)) {
-                // Obtuse/Right triangle
-                minRadius = arr[2] / 2;
-            } else {
-                // Acute triangle
-                double s = (d1 + d2 + d3) / 2;
-                double area = Math.sqrt(s * (s - d1) * (s - d2) * (s - d3));
-                minRadius = (d1 * d2 * d3) / (4 * area);
-            }
+            double minRadius = Point.minEnclosingRadius(A, B, C);
 
             if (minRadius > RADIUS1) return true; 
         }
@@ -342,7 +375,7 @@ public class CMV {
             Point B = points[i + C_PTS + 1];
             Point C = points[i + C_PTS + D_PTS + 2];
 
-            if(!A.areTheSame(B) && !C.areTheSame(B)) {
+            if(!A.equals(B) && !C.equals(B)) {
 
                 double BAx = A.x - B.x;
                 double BAy = A.y - B.y;
@@ -371,9 +404,91 @@ public class CMV {
     }
 
 
-    public static boolean lic10() {return false;}
-    public static boolean lic11() {return false;}
-    public static boolean lic12() {return false;}
+    /**
+     * LIC 10: area > AREA1 for three data points separated by exactly E PTS and F PTS
+     * @param points Array of planar points (≥5 points required)
+     * @param E_PTS The number of consecutive intervening points between the first point and the second point of the triangle
+     * @param F_PTS The number of consecutive intervening points between the second point and the third point of the triangle
+     * @param AREA1 The threshold area for the condition
+     * @return true if condition is met
+     * */
+    public static Boolean lic10(Point[] points, int E_PTS, int F_PTS, double AREA1) {
+        if(points.length < 5) return false;
+        int i = 0;
+        for (Point A : points) {
+            if(i + E_PTS + F_PTS + 2 >= points.length) {
+                break;
+            }
+            Point B = points[i + E_PTS + 1];
+            Point C = points[i + E_PTS + F_PTS + 2];
+            double area = Math.abs(0.5 * (A.x * (B.y - C.y) + B.x * (C.y - A.y) + C.x * (A.y - B.y)));
+            if(area > AREA1) {
+                return true;
+            }
+            i = i + 1;
+        }
+        return false;
+    }
+
+   /**
+     * Checks if there exists at least one pair of data points separated by exactly
+     * G_PTS intervening points where the x-coordinate decreases (points[j].x < points[i].x).
+     *
+     * @param points an array of Point objects to check
+     * @param G_PTS   the number of consecutive intervening points between the pair being checked
+     * @return true if there exists an index i such that j = i + G_PTS + 1 is within bounds
+     *         and points[j].x < points[i].x; false otherwise
+     */
+    public static boolean lic11(Point[] points, int G_PTS) {
+        if (points == null || points.length < 3) {
+            return false;
+        }
+
+        if (G_PTS < 1 || G_PTS > points.length - 2) {
+            return false;
+        }
+
+        for (int i = 0; i <= points.length - G_PTS - 2; i++) {
+            int j = i + G_PTS + 1;
+            if (points[j].x < points[i].x) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * LIC 12: distance > LENGTH1 for two data points separated by exactly K_PTS and distance > LENGTH2 for two other
+     * (or the same) data points separated also by exactly K_PTS
+     * @param points Array of planar points (≥5 points required)
+     * @param K_PTS The number of consecutive intervening points between the two data points considered for distance checks
+     * @param LENGTH1 The threshold distance for the first part of the condition
+     * @param LENGTH2 The threshold distance for the second part of the condition
+     * @return true if condition is met
+     */
+    public static Boolean lic12(Point[] points, int K_PTS, double LENGTH1, double LENGTH2) {
+        int i = 0;
+        boolean condition_1 = false;
+        boolean condition_2 = false;
+        if(points.length < 3) {return false;}
+
+        for (Point A : points) {
+            if(i + K_PTS + 1 >= points.length) {
+                break;
+            }
+            Point B = points[i + K_PTS + 1];
+            double distance = A.distance(B);
+            if(distance > LENGTH1) {
+                condition_1 = true;
+            }
+            if(distance < LENGTH2) {
+                condition_2 = true;
+            }
+            i += 1;
+        }
+        return condition_1 && condition_2;
+    }
     
     /**
      * Checks if there exists at least one set of three data points, separated by exactly {@code A_PTS} 
