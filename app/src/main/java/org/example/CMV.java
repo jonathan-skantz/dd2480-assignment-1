@@ -55,7 +55,7 @@ public class CMV {
     /**
      * Returns if at least three consecutive data points is does not fitt into a circle with radius {@code Radius1}.
      * @param points the data points (coordinates)
-     * @param Radius1 The radius of the circle in which three consecutive data points must fitt
+     * @param RADIUS1 The radius of the circle in which three consecutive data points must fitt
      * @return {@code true} if the condition is met, {@code false} otherwise
      */
     public static boolean lic1(Point[] points, double RADIUS1) {
@@ -372,8 +372,12 @@ public class CMV {
      * @return true if condition is met
      */
     public static Boolean lic9(Point[] points, int C_PTS, int D_PTS, double EPSILON) {
-        int i = 0;
+
+        if(1 > C_PTS) {return false;}
+        if(1 > D_PTS) {return false;}
+        if(C_PTS + D_PTS > points.length - 3) {return false;}
         if(points.length < 5) return false;
+        int i = 0;
 
         for (Point A : points) {
             if(i + C_PTS + D_PTS + 2 >= points.length) {
