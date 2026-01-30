@@ -618,6 +618,113 @@ class CMVTest {
     }
   
     /**
+     * Negative test: If {@code N_PTS < 3}, LIC6 should return false.
+     * Test case: Points (0,0) → (1,0), N_PTS = 3, DIST = 0.5
+     * Expected: false, since fewer than 3 points cannot form a triangle.
+     */
+    @Test
+    void lic6_NPTSlessThan3_returnsFalse() {
+        Point[] points = {
+            new Point(0,0),
+            new Point(1,0)
+        };
+        assertFalse(CMV.lic6(points, 3, 0.5));
+    }
+
+    /**
+     * Negative test: If {@code DIST < 0}, LIC6 should return false.
+     * Test case: Points (0,0) → (1,0) → (0,1), N_PTS = 3, DIST = -1.0
+     * Expected: false, since DIST must be non-negative.
+     */
+    @Test
+    void lic6_negativeDIST_returnsFalse() {
+        Point[] pts = {
+            new Point(0,0),
+            new Point(1,0),
+            new Point(0,1)
+        };
+        assertFalse(CMV.lic6(pts, 3, -1.0));
+    }
+
+    /**
+     * Negative test: If all points between A and Z lie on the line AZ, LIC6 should return false.
+     * Test case: Points (0,0) → (1,0) → (2,0), N_PTS = 3, DIST = 0.5
+     * Expected: false, since perpendicular distance to AZ is 0.
+     */
+    @Test
+    void lic6_allPointsOnLine_returnsFalse() {
+        Point[] pts = {
+            new Point(0,0),
+            new Point(1,0),
+            new Point(2,0)
+        };
+        assertFalse(CMV.lic6(pts, 3, 0.5));
+    }
+
+    /**
+     * Negative test: If A coincides with Z and no point is farther than {@code DIST}, LIC6 should return false.
+     * Test case: Points (0,0) → (0.5,0.5) → (0,0), N_PTS = 3, DIST = 1.0
+     * Expected: false, since distance from A is not greater than {@code DIST}.
+     */
+    @Test
+    void lic6_AEqualsZNotFarEnough_returnsFalse() {
+        Point[] pts = {
+            new Point(0,0),
+            new Point(0.5,0.5),
+            new Point(0,0)
+        };
+        assertFalse(CMV.lic6(pts, 3, 1.0));
+    }
+
+    /**
+     * Positive test: If at least one intermediate point has perpendicular distance greater than {@code DIST}, LIC6 should return true.
+     * Test case: Points (0,0) → (1,2) → (2,0), N_PTS = 3, DIST = 1.0
+     * Expected: true, since the perpendicular distance to AZ exceeds {@code DIST}.
+     */
+    @Test
+    void lic6_pointFarFromLine_returnsTrue() {
+        Point[] pts = {
+            new Point(0,0),
+            new Point(1,2),
+            new Point(2,0)
+        };
+        assertTrue(CMV.lic6(pts, 3, 1.0));
+    }
+
+    /**
+     * Positive test: If a valid LIC6 condition appears in a later triangle, LIC6 should return true.
+     * Test case: Points (0,0) → (1,0) → (2,0) → (2,2) → (3,0), N_PTS = 3, DIST = 1.0
+     * Expected: true, since triangle (2,0) → (2,2) → (3,0) produces distance > {@code DIST}.
+     */
+    @Test
+    void lic6_triggerInLaterWindow_returnsTrue() {
+        Point[] pts = {
+            new Point(0,0),
+            new Point(1,0),
+            new Point(2,0),
+            new Point(2,2),
+            new Point(3,0)
+        };
+        assertTrue(CMV.lic6(pts, 3, 1.0));
+    }
+
+    /**
+     * Positive test: If A coincides with Z and an intermediate point is farther than {@code DIST}, LIC6 should return true.
+     * Test case: Points (0,0) → (2,0) → (0,0), N_PTS = 3, DIST = 1.0
+     * Expected: true, since distance from A exceeds {@code DIST}.
+     */
+    @Test
+    void lic6_AequalsZ_pointFar_returnsTrue() {
+        Point[] pts = {
+            new Point(0,0),
+            new Point(2,0),
+            new Point(0,0)
+        };
+        assertTrue(CMV.lic6(pts, 3, 1.0));
+    }
+
+
+    /**
      * Positive test: LIC7 should return true when a pair separated by K_PTS has distance greater than LENGTH1.
      * lic7 should return true.
      * Test case: Points (0, 0), (0, 0), (3, 0) with K_PTS=1, LENGTH1=2.0.
