@@ -45,7 +45,10 @@ class CMVTest {
     }
     
     /**
-     * If {@code RADIUS1} is negative, lic1 should return false.
+     * Defensive test: LIC1 should return false when RADIUS1 is negative.
+     * lic1 should return false.
+     * Test case: Points (0,0), (1,0), (0,1) with RADIUS1 = -1.0.
+     * Expected: false (invalid radius).
      */
     @Test
     void lic1_negativeRadius_returnsFalse() {
@@ -60,7 +63,10 @@ class CMVTest {
     }
 
     /**
-     * If less than three points in input, lic1 should return false.
+     * Defensive test: LIC1 should return false when fewer than three points are provided.
+     * lic1 should return false.
+     * Test case: Points (0,0), (1,0) with RADIUS1 = 1.0.
+     * Expected: false (not enough points to form a circle).
      */
     @Test
     void lic1_lessThanThreePoints_returnsFalse() {
@@ -73,7 +79,11 @@ class CMVTest {
     }
 
     /**
-     * If three consecutive points create an Obtuse/Right triangle that cannot fitt incide a cirecle with {@code RADIUS1}, lic1 should return true.
+     * Positive test: LIC1 should return true when an obtuse/right triangle
+     * cannot be enclosed by a circle with radius RADIUS1.
+     * lic1 should return true.
+     * Test case: Points (0,0), (3,0), (0,4) with RADIUS1 = 2.0.
+     * Expected: true (minimum enclosing circle radius is 2.5 > 2.0).
      */
     @Test
     void lic1_obtuseRightTriangleMinimumRadiusGreaterThanRADIUS1_returnsTrue() {
@@ -87,7 +97,11 @@ class CMVTest {
     }
 
     /**
-     * If three consecutive points create an Obtuse/Right triangle that creates a minimum radius that is equal to {@code RADIUS1}, lic1 should return false.
+     * Negative test: LIC1 should return false when the minimum enclosing circle
+     * radius of an obtuse/right triangle equals RADIUS1.
+     * lic1 should return false.
+     * Test case: Points (0,0), (3,0), (0,4) with RADIUS1 = 2.5.
+     * Expected: false (minimum radius equals RADIUS1).
      */
     @Test
     void lic1_obtuseRightTriangleMinimumRadiusEqualToRADIUS1_returnsFalse() {
@@ -101,7 +115,11 @@ class CMVTest {
     }
 
     /**
-     * If three consecutive points create an Obtuse/Right triangle that can fitt incide a cirecle with {@code RADIUS1}, lic1 should return false.
+     * Negative test: LIC1 should return false when an obtuse/right triangle
+     * can be enclosed by a circle with radius RADIUS1.
+     * lic1 should return false.
+     * Test case: Points (0,0), (3,0), (0,4) with RADIUS1 = 3.0.
+     * Expected: false (minimum radius 2.5 < 3.0).
      */
     @Test
     void lic1_obtuseRightTriangleMinimumRadiusSmallerThanRADIUS1_returnsFalse() {
@@ -115,7 +133,11 @@ class CMVTest {
     }
 
     /**
-     * If three consecutive points create an acute triangle that cannot fitt incide a cirecle with {@code RADIUS1}, lic1 should return true.
+     * Positive test: LIC1 should return true when an acute triangle
+     * cannot be enclosed by a circle with radius RADIUS1.
+     * lic1 should return true.
+     * Test case: Points (0,0), (2,0), (1, √3) with RADIUS1 = 1.0.
+     * Expected: true (minimum enclosing circle radius ≈ 1.155 > 1.0).
      */
     @Test
     void lic1_acuteTriangleMinimumRadiusGreaterThanRADIUS1_returnsTrue() {
@@ -129,7 +151,11 @@ class CMVTest {
     }
 
     /**
-     * If three consecutive points create an acute triangle that creates a minimum radius that is equal to {@code RADIUS1}, lic1 should return false.
+     * Negative test: LIC1 should return false when the minimum enclosing circle
+     * radius of an acute triangle equals RADIUS1.
+     * lic1 should return false.
+     * Test case: Points (0,0), (2,0), (1, √3) with RADIUS1 = 2 / √3.
+     * Expected: false (minimum radius equals RADIUS1).
      */
     @Test
     void lic1_acuteTriangleMinimumRadiusEqualToRADIUS1_returnsFalse() {
@@ -143,7 +169,11 @@ class CMVTest {
     }
 
     /**
-     * If three consecutive points create an acute triangle that can fitt incide a cirecle with {@code RADIUS1}, lic1 should return false.
+     * Negative test: LIC1 should return false when an acute triangle
+     * can be enclosed by a circle with radius RADIUS1.
+     * lic1 should return false.
+     * Test case: Points (0,0), (2,0), (1, √3) with RADIUS1 = 1.3.
+     * Expected: false (minimum radius ≈ 1.155 < 1.3).
      */
     @Test
     void lic1_acuteTriangleMinimumRadiusSmallerThanRADIUS1_returnsFalse() {
