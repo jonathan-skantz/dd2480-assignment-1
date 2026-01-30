@@ -342,7 +342,7 @@ public class CMV {
      * @param RADIUS1 radius to the circle
      * @return {@code true} if the statement holds, {@code false} otherwise.}
      */
-    public static Boolean lic8(Point[] points, int A_PTS, int B_PTS, double RADIUS1) {
+    public static boolean lic8(Point[] points, int A_PTS, int B_PTS, double RADIUS1) {
         int NUMPOINTS = points.length;
 
         if (RADIUS1 < 0) return false;
@@ -371,7 +371,7 @@ public class CMV {
      * @param EPSILON A non‑negative tolerance parameter for angular deviation from π
      * @return true if condition is met
      */
-    public static Boolean lic9(Point[] points, int C_PTS, int D_PTS, double EPSILON) {
+    public static boolean lic9(Point[] points, int C_PTS, int D_PTS, double EPSILON) {
         int i = 0;
         if(points.length < 5) return false;
 
@@ -419,7 +419,7 @@ public class CMV {
      * @param AREA1 The threshold area for the condition
      * @return true if condition is met
      * */
-    public static Boolean lic10(Point[] points, int E_PTS, int F_PTS, double AREA1) {
+    public static boolean lic10(Point[] points, int E_PTS, int F_PTS, double AREA1) {
 
         if(1 > E_PTS) {return false;}
         if(1 > F_PTS) {return false;}
@@ -478,7 +478,7 @@ public class CMV {
      * @param LENGTH2 The threshold distance for the second part of the condition
      * @return true if condition is met
      */
-    public static Boolean lic12(Point[] points, int K_PTS, double LENGTH1, double LENGTH2) {
+    public static boolean lic12(Point[] points, int K_PTS, double LENGTH1, double LENGTH2) {
         if(0 > LENGTH2) {return false;}
         if(0 > LENGTH1) {return false;}
         if(points.length < 3) {return false;}
@@ -518,7 +518,7 @@ public class CMV {
      * @param RADIUS2 the radius used for the "can fit" requirement
      * @return {@code true} if both requirements are met, {@code false} otherwise
      */
-    public static Boolean lic13(Point[] points, int A_PTS, int B_PTS, double RADIUS1, double RADIUS2) {
+    public static boolean lic13(Point[] points, int A_PTS, int B_PTS, double RADIUS1, double RADIUS2) {
         int NUMPOINTS = points.length;
         if(NUMPOINTS < 5) return false; // The condition is not met when NUMPOINTS < 5
         if(RADIUS2 < 0) return false;   // 0 ≤ RADIUS2
