@@ -413,6 +413,10 @@ public class CMV {
      * @return true if condition is met
      * */
     public static Boolean lic10(Point[] points, int E_PTS, int F_PTS, double AREA1) {
+
+        if(1 > E_PTS) {return false;}
+        if(1 > F_PTS) {return false;}
+        if(E_PTS + F_PTS > points.length - 3) {return false;}
         if(points.length < 5) return false;
         int i = 0;
         for (Point A : points) {
