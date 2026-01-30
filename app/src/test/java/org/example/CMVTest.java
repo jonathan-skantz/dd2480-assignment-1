@@ -432,7 +432,9 @@ class CMVTest {
     }
     
     /**
-     * If {@code Q_PTS} is less than 2, lic4 should return false.
+     * Negative test: If {@code Q_PTS} is less than 2, lic4 should return false.
+     * Test case: (0, 0) → (1, 0) → (1, 1)
+     * Expected: false, since {@code Q_PTS} is 1 and 1 < 2.
      */
     @Test
     void lic4_Q_PTSLessThanTwo_returnsFalse() {
@@ -448,7 +450,9 @@ class CMVTest {
     }
     
     /**
-     * If {@code NUMPOINTS} is less than {@code Q_PTS}, lic4 should return false.
+     * Negative test: If {@code NUMPOINTS} is less than {@code Q_PTS}, lic4 should return false.
+     * Test case: (0, 0) → (1, 0)
+     * Expected: false, since {@code NUMPOINTS} is 2 and {@code Q_PTS} is 3 and 2 < 3. 
      */
     @Test
     void lic4_NUMPOINTSLessThanQ_PTS_returnsFalse() {
@@ -463,7 +467,9 @@ class CMVTest {
     }
     
     /**
-     * If {@code QUADS} is less than one, lic4 should return false. 
+     * Negative test: If {@code QUADS} is less than one, lic4 should return false. 
+     * Test case: (0, 0) → (1, 0) → (1, 1)
+     * Expected: false, since {@code QUADS} is 0 and 0 < 1.
      */
     @Test
     void lic4_QUADSLessThanOne_returnsFalse() {
@@ -479,7 +485,9 @@ class CMVTest {
     }
 
     /**
-     * If {@code QUADS} is higher than three, lic4 should return false.
+     * Negative test: If {@code QUADS} is higher than three, lic4 should return false.
+     * Test case: (0, 0) → (1, 0) → (1, 1)
+     * Expected: false, since {@code QUADS} is 4 and 4 > 3.
      */
     @Test
     void lic4_QUADSHigherThanThree_returnsFalse() {
@@ -495,7 +503,9 @@ class CMVTest {
     }
 
     /**
-     * If {@code Q_PTS} consecutive points lie in more than {@code QUADS} quadrants, lic4 should return true.
+     * Positive test: If {@code Q_PTS} consecutive points lie in more than {@code QUADS} quadrants, lic4 should return true.
+     * Test case: (1, 1) → (-1, 1)
+     * Expected: true, since {@code Q_PTS} is 2 and {@code QUADS} is 1 and the two points lie in more than one quadrant.
      */
     @Test
     void lic4_Q_PTSInMoreThanQUADSQuadrants_returnsTrue() {
@@ -510,7 +520,9 @@ class CMVTest {
     }   
     
     /**
-     * If {@code Q_PTS} consecutive points lie in exactly {@code QUADS} quadrants, lic4 should return false.
+     * Negative test: If {@code Q_PTS} consecutive points lie in exactly {@code QUADS} quadrants, lic4 should return false.
+     * Test case: (1, 1) → (-1, 1)
+     * Expected: false, since {@code Q_PTS} is 2 and {@code QUADS} is 2 and the two points cannot lie in more than two quadrants.
      */
     @Test
     void lic4_Q_PTSInExactlyQUADSQuadrants_returnsFalse() {
@@ -525,7 +537,9 @@ class CMVTest {
     }   
 
     /**
-     * If there does not exist a set of {@code Q_PTS} consecutive points that lie in more than {@code QUADS} quadrants, lic4 should return false.
+     * Negative test: If there does not exist a set of {@code Q_PTS} consecutive points that lie in more than {@code QUADS} quadrants, lic4 should return false.
+     * Test case: (1, 1) → (2, 2) → (-1, 1)
+     * Expected: false, since {@code Q_PTS} is 2 and {@code QUADS} is 2 and no set of two points satisfies the condition.
      */
     @Test
     void lic4_noSetOfQ_PTSConsecutivePointsSatisfiesCondition_returnsFalse() {
@@ -541,9 +555,11 @@ class CMVTest {
     }
 
     /**
-     * If quadrant membership is ambiguous (points on axes),
+     * Positive test: If quadrant membership is ambiguous (points on axes),
      * lic4 should resolve the ambiguity using the priority rule (I -> II -> III -> IV)
      * and return true when {@code Q_PTS} points lie in more than {@code QUADS} quadrants.
+     * Test case: (0, 0) → (-1, 0) → (0, -1) → (0, 1) → (1, 0)
+     * Expected: true, since, according to the priority rule, the points cover all four quadrants and thus lie in more than {@code QUADS = 2} quadrants.
      */
     @Test
     void lic4_positiveCaseWithAmbiguousQuadrants_returnsTrue() {
@@ -561,7 +577,9 @@ class CMVTest {
     }
 
     /**
-     * If a set of {@code Q_PTS} consecutive points that lie in more than {@code QUADS} quadrants appears later in the array, lic4 should return true.
+     * Positive test: If a set of {@code Q_PTS} consecutive points that lie in more than {@code QUADS} quadrants appears later in the array, lic4 should return true.
+     * Test case: (0, 0) → (1, 1) → (2, 2) → (3, 3) → (-1, 1)
+     * Expected: true, since the last set of two points lie in two quadrants and thus lie in more than {@code QUADS = 1} quadrants.
      */
     @Test
     void lic4_laterSetSatisfiesCondition_returnsTrue() {
