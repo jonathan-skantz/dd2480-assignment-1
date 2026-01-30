@@ -17,7 +17,7 @@ public class CMV {
         cmv[3] = lic3(points, parameters.AREA1);
         cmv[4] = lic4(points, parameters.Q_PTS, parameters.QUADS);
         cmv[5] = lic5(points);
-        cmv[6] = lic6();
+        cmv[6] = lic6(points, parameters.N_PTS, parameters.DIST);
         cmv[7] = lic7(points, parameters.K_PTS, parameters.LENGTH1);
         cmv[8] = lic8(points, parameters.A_PTS, parameters.B_PTS, parameters.RADIUS1);
         cmv[9] = lic9(points, parameters.C_PTS, parameters.D_PTS, parameters.EPSILON);
@@ -214,8 +214,75 @@ public class CMV {
         
         return false;
     }
-  
-    public static boolean lic6() {return false;}
+
+    /**
+     * Given {@code N_PTS} consecutive points, we draw a line (AZ) between the first (A) and last (Z) point.
+     * For every consecutive point B between A and Z, we compare the perpendicular distance between B and AZ.
+     * If A and Z are the same point, we instead compare the distance between B and A.
+     * @param points data points
+     * @param N_PTS number of consecutive points from A to Z (including both end points)
+     * @param DIST the distance which at least one point between A and B must be from AZ
+     * @return {@code true} if the distance is large enough, {@code false} otherwise
+     */
+    public static boolean lic6(Point[] points, int N_PTS, double DIST) {
+        if (N_PTS < 3 || N_PTS > points.length) {
+            return false;
+        }
+        if (DIST < 0) {
+            return false;
+        }
+
+        // NOTE: i cannot grow so that lastIndex becomes greater than points.length-1
+        for (int i = 0; i <= points.length - N_PTS; i++) {
+            int lastIndex = i + N_PTS - 1;
+            Point A = points[i];
+            Point Z = points[lastIndex];
+
+            // Case 1: A == Z
+            if (A.equals(Z)) {
+                for (int j = i + 1; j < lastIndex; j++) {
+                    Point B = points[j];
+                    if (B.distance(A) > DIST) {
+                        return true;
+                    }
+                }
+            }
+            // Case 2: A != Z
+            else {
+                /*
+                Given first and last points (A and Z) and point in-between (B):
+                    1. Project AB onto AZ:
+                        proj_(AZ)AB = (AB dot AZ) / (AZ dot AZ) * AZ
+
+                    2. Compute the vector v from B to the line formed by AZ:
+                        v = proj_(AZ)AB - AB
+                    
+                    3. The (perpendicular) distance is the magnitude of v:
+                        d = |v|
+                */
+                Point AZ = A.vectorTo(Z);
+
+                // Cannot project onto the 0 vector.
+                if (AZ.magnitude() == 0) {
+                    continue;
+                }
+
+                // Check points that are consecutive between A and Z
+                for (int j = i + 1; j < lastIndex; j++) {
+                    Point B = points[j];
+                    Point AB = A.vectorTo(B);
+
+                    Point proj = AB.projectOnto(AZ);
+                    Point v = proj.subtract(AB);
+
+                    if (v.magnitude() > DIST) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
     
     /**
      * Checks for at least one pair of points separated by exactly K_PTS

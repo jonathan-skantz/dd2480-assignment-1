@@ -188,7 +188,10 @@ class CMVTest {
 
     
     /**
-     * If {@code EPSILON} is negative, lic1 should return false.
+     * Defensive test: LIC2 should return false when EPSILON is negative.
+     * lic2 should return false.
+     * Test case: Points (0,0), (1,0), (0,1) with EPSILON = -1.0 and PI = π.
+     * Expected: false (invalid EPSILON).
      */
     @Test
     void lic2_negativeEPSILON_returnsFalse() {
@@ -203,7 +206,10 @@ class CMVTest {
     }
 
     /**
-     * If {@code EPSILON} is larger than {@code PI}, lic1 should return false.
+     * Defensive test: LIC2 should return false when EPSILON is greater than PI.
+     * lic2 should return false.
+     * Test case: Points (0,0), (1,0), (0,1) with EPSILON = 4.0 and PI = π.
+     * Expected: false (EPSILON must be in the range [0, PI)).
      */
     @Test
     void lic2_EPSILONBiggerThanPI_returnsFalse() {
@@ -218,7 +224,10 @@ class CMVTest {
     }
 
     /**
-     * If less than three points in input, lic2 should return false.
+     * Defensive test: LIC2 should return false when fewer than three points are provided.
+     * lic2 should return false.
+     * Test case: Points (0,0), (1,0) with EPSILON = 1.0 and PI = π.
+     * Expected: false (not enough points to form an angle).
      */
     @Test
     void lic2_lessThanThreePoints_returnsFalse() {
@@ -231,7 +240,10 @@ class CMVTest {
     }
 
     /**
-     * If the first point coincides with the vertex, lic2 should return false.
+     * Defensive test: LIC2 should return false when the first point coincides with the vertex.
+     * lic2 should return false.
+     * Test case: Points (0,0), (0,0), (1,0) with EPSILON = 1.0 and PI = π.
+     * Expected: false (angle cannot be computed).
      */
     @Test
     void lic2_firstPointEqualToVertex_returnsFalse() {
@@ -245,7 +257,10 @@ class CMVTest {
     }
 
     /**
-     * If the last point coincides with the vertex, lic2 should return false.
+     * Defensive test: LIC2 should return false when the last point coincides with the vertex.
+     * lic2 should return false.
+     * Test case: Points (0,0), (1,0), (1,0) with EPSILON = 1.0 and PI = π.
+     * Expected: false (angle cannot be computed).
      */
     @Test
     void lic2_lastPointEqualToVertex_returnsFalse() {
@@ -259,7 +274,10 @@ class CMVTest {
     }
 
     /**
-     * If both other points coincides with the vertex, lic2 should return false.
+     * Defensive test: LIC2 should return false when both outer points coincide with the vertex.
+     * lic2 should return false.
+     * Test case: Points (1,0), (1,0), (1,0) with EPSILON = 1.0 and PI = π.
+     * Expected: false (all points coincide).
      */
     @Test
     void lic2_bothPointsEqualToVertex_returnsFalse() {
@@ -273,7 +291,11 @@ class CMVTest {
     }
 
     /**
-     * If angle < {@code (PI − EPSILON)}, lic2 should return true.
+     * Positive test: LIC2 should return true when the angle formed by three consecutive
+     * points is less than (PI − EPSILON).
+     * lic2 should return true.
+     * Test case: Points (1,0), (0,0), (0,1) with EPSILON = 0.5 and PI = π.
+     * Expected: true (angle = 90°, which is < π − 0.5).
      */
     @Test
     void lic2_angleSmall_returnsTrue() {
@@ -287,7 +309,11 @@ class CMVTest {
     }
 
     /**
-     * If angle > {@code (PI + EPSILON)}, lic2 should return true.
+     * Positive test: LIC2 should return true when the angle formed by three consecutive
+     * points is greater than (PI + EPSILON).
+     * lic2 should return true.
+     * Test case: Points (-1,-0.01), (0,0), (1,-0.01) with EPSILON = 0.0 and PI = π.
+     * Expected: true (angle is slightly greater than π).
      */
     @Test
     void lic2_angleLarge_returnsTrue() {
@@ -432,7 +458,9 @@ class CMVTest {
     }
     
     /**
-     * If {@code Q_PTS} is less than 2, lic4 should return false.
+     * Negative test: If {@code Q_PTS} is less than 2, lic4 should return false.
+     * Test case: (0, 0) → (1, 0) → (1, 1)
+     * Expected: false, since {@code Q_PTS} is 1 and 1 < 2.
      */
     @Test
     void lic4_Q_PTSLessThanTwo_returnsFalse() {
@@ -448,7 +476,9 @@ class CMVTest {
     }
     
     /**
-     * If {@code NUMPOINTS} is less than {@code Q_PTS}, lic4 should return false.
+     * Negative test: If {@code NUMPOINTS} is less than {@code Q_PTS}, lic4 should return false.
+     * Test case: (0, 0) → (1, 0)
+     * Expected: false, since {@code NUMPOINTS} is 2 and {@code Q_PTS} is 3 and 2 < 3. 
      */
     @Test
     void lic4_NUMPOINTSLessThanQ_PTS_returnsFalse() {
@@ -463,7 +493,9 @@ class CMVTest {
     }
     
     /**
-     * If {@code QUADS} is less than one, lic4 should return false. 
+     * Negative test: If {@code QUADS} is less than one, lic4 should return false. 
+     * Test case: (0, 0) → (1, 0) → (1, 1)
+     * Expected: false, since {@code QUADS} is 0 and 0 < 1.
      */
     @Test
     void lic4_QUADSLessThanOne_returnsFalse() {
@@ -479,7 +511,9 @@ class CMVTest {
     }
 
     /**
-     * If {@code QUADS} is higher than three, lic4 should return false.
+     * Negative test: If {@code QUADS} is higher than three, lic4 should return false.
+     * Test case: (0, 0) → (1, 0) → (1, 1)
+     * Expected: false, since {@code QUADS} is 4 and 4 > 3.
      */
     @Test
     void lic4_QUADSHigherThanThree_returnsFalse() {
@@ -495,7 +529,9 @@ class CMVTest {
     }
 
     /**
-     * If {@code Q_PTS} consecutive points lie in more than {@code QUADS} quadrants, lic4 should return true.
+     * Positive test: If {@code Q_PTS} consecutive points lie in more than {@code QUADS} quadrants, lic4 should return true.
+     * Test case: (1, 1) → (-1, 1)
+     * Expected: true, since {@code Q_PTS} is 2 and {@code QUADS} is 1 and the two points lie in more than one quadrant.
      */
     @Test
     void lic4_Q_PTSInMoreThanQUADSQuadrants_returnsTrue() {
@@ -510,7 +546,9 @@ class CMVTest {
     }   
     
     /**
-     * If {@code Q_PTS} consecutive points lie in exactly {@code QUADS} quadrants, lic4 should return false.
+     * Negative test: If {@code Q_PTS} consecutive points lie in exactly {@code QUADS} quadrants, lic4 should return false.
+     * Test case: (1, 1) → (-1, 1)
+     * Expected: false, since {@code Q_PTS} is 2 and {@code QUADS} is 2 and the two points cannot lie in more than two quadrants.
      */
     @Test
     void lic4_Q_PTSInExactlyQUADSQuadrants_returnsFalse() {
@@ -525,7 +563,9 @@ class CMVTest {
     }   
 
     /**
-     * If there does not exist a set of {@code Q_PTS} consecutive points that lie in more than {@code QUADS} quadrants, lic4 should return false.
+     * Negative test: If there does not exist a set of {@code Q_PTS} consecutive points that lie in more than {@code QUADS} quadrants, lic4 should return false.
+     * Test case: (1, 1) → (2, 2) → (-1, 1)
+     * Expected: false, since {@code Q_PTS} is 2 and {@code QUADS} is 2 and no set of two points satisfies the condition.
      */
     @Test
     void lic4_noSetOfQ_PTSConsecutivePointsSatisfiesCondition_returnsFalse() {
@@ -541,9 +581,11 @@ class CMVTest {
     }
 
     /**
-     * If quadrant membership is ambiguous (points on axes),
+     * Positive test: If quadrant membership is ambiguous (points on axes),
      * lic4 should resolve the ambiguity using the priority rule (I -> II -> III -> IV)
      * and return true when {@code Q_PTS} points lie in more than {@code QUADS} quadrants.
+     * Test case: (0, 0) → (-1, 0) → (0, -1) → (0, 1) → (1, 0)
+     * Expected: true, since, according to the priority rule, the points cover all four quadrants and thus lie in more than {@code QUADS = 2} quadrants.
      */
     @Test
     void lic4_positiveCaseWithAmbiguousQuadrants_returnsTrue() {
@@ -561,7 +603,9 @@ class CMVTest {
     }
 
     /**
-     * If a set of {@code Q_PTS} consecutive points that lie in more than {@code QUADS} quadrants appears later in the array, lic4 should return true.
+     * Positive test: If a set of {@code Q_PTS} consecutive points that lie in more than {@code QUADS} quadrants appears later in the array, lic4 should return true.
+     * Test case: (0, 0) → (1, 1) → (2, 2) → (3, 3) → (-1, 1)
+     * Expected: true, since the last set of two points lie in two quadrants and thus lie in more than {@code QUADS = 1} quadrants.
      */
     @Test
     void lic4_laterSetSatisfiesCondition_returnsTrue() {
@@ -647,6 +691,113 @@ class CMVTest {
         assertFalse(CMV.lic5(points));
     }
   
+    /**
+     * Negative test: If {@code N_PTS < 3}, LIC6 should return false.
+     * Test case: Points (0,0) → (1,0), N_PTS = 3, DIST = 0.5
+     * Expected: false, since fewer than 3 points cannot form a triangle.
+     */
+    @Test
+    void lic6_NPTSlessThan3_returnsFalse() {
+        Point[] points = {
+            new Point(0,0),
+            new Point(1,0)
+        };
+        assertFalse(CMV.lic6(points, 3, 0.5));
+    }
+
+    /**
+     * Negative test: If {@code DIST < 0}, LIC6 should return false.
+     * Test case: Points (0,0) → (1,0) → (0,1), N_PTS = 3, DIST = -1.0
+     * Expected: false, since DIST must be non-negative.
+     */
+    @Test
+    void lic6_negativeDIST_returnsFalse() {
+        Point[] pts = {
+            new Point(0,0),
+            new Point(1,0),
+            new Point(0,1)
+        };
+        assertFalse(CMV.lic6(pts, 3, -1.0));
+    }
+
+    /**
+     * Negative test: If all points between A and Z lie on the line AZ, LIC6 should return false.
+     * Test case: Points (0,0) → (1,0) → (2,0), N_PTS = 3, DIST = 0.5
+     * Expected: false, since perpendicular distance to AZ is 0.
+     */
+    @Test
+    void lic6_allPointsOnLine_returnsFalse() {
+        Point[] pts = {
+            new Point(0,0),
+            new Point(1,0),
+            new Point(2,0)
+        };
+        assertFalse(CMV.lic6(pts, 3, 0.5));
+    }
+
+    /**
+     * Negative test: If A coincides with Z and no point is farther than {@code DIST}, LIC6 should return false.
+     * Test case: Points (0,0) → (0.5,0.5) → (0,0), N_PTS = 3, DIST = 1.0
+     * Expected: false, since distance from A is not greater than {@code DIST}.
+     */
+    @Test
+    void lic6_AEqualsZNotFarEnough_returnsFalse() {
+        Point[] pts = {
+            new Point(0,0),
+            new Point(0.5,0.5),
+            new Point(0,0)
+        };
+        assertFalse(CMV.lic6(pts, 3, 1.0));
+    }
+
+    /**
+     * Positive test: If at least one intermediate point has perpendicular distance greater than {@code DIST}, LIC6 should return true.
+     * Test case: Points (0,0) → (1,2) → (2,0), N_PTS = 3, DIST = 1.0
+     * Expected: true, since the perpendicular distance to AZ exceeds {@code DIST}.
+     */
+    @Test
+    void lic6_pointFarFromLine_returnsTrue() {
+        Point[] pts = {
+            new Point(0,0),
+            new Point(1,2),
+            new Point(2,0)
+        };
+        assertTrue(CMV.lic6(pts, 3, 1.0));
+    }
+
+    /**
+     * Positive test: If a valid LIC6 condition appears in a later triangle, LIC6 should return true.
+     * Test case: Points (0,0) → (1,0) → (2,0) → (2,2) → (3,0), N_PTS = 3, DIST = 1.0
+     * Expected: true, since triangle (2,0) → (2,2) → (3,0) produces distance > {@code DIST}.
+     */
+    @Test
+    void lic6_triggerInLaterWindow_returnsTrue() {
+        Point[] pts = {
+            new Point(0,0),
+            new Point(1,0),
+            new Point(2,0),
+            new Point(2,2),
+            new Point(3,0)
+        };
+        assertTrue(CMV.lic6(pts, 3, 1.0));
+    }
+
+    /**
+     * Positive test: If A coincides with Z and an intermediate point is farther than {@code DIST}, LIC6 should return true.
+     * Test case: Points (0,0) → (2,0) → (0,0), N_PTS = 3, DIST = 1.0
+     * Expected: true, since distance from A exceeds {@code DIST}.
+     */
+    @Test
+    void lic6_AequalsZ_pointFar_returnsTrue() {
+        Point[] pts = {
+            new Point(0,0),
+            new Point(2,0),
+            new Point(0,0)
+        };
+        assertTrue(CMV.lic6(pts, 3, 1.0));
+    }
+
+
     /**
      * Positive test: LIC7 should return true when a pair separated by K_PTS has distance greater than LENGTH1.
      * lic7 should return true.
