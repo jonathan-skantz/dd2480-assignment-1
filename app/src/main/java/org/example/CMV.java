@@ -553,7 +553,7 @@ public class CMV {
      * @return {@code true} if the two conditions are met, {@code false} otherwise
      */
     public static boolean lic14(Point[] points, int E_PTS, int F_PTS, double AREA1, double AREA2) {
-        if (points.length < 5 || AREA2 < 0) {
+        if (points.length < 5 || AREA1 < 0 || AREA2 < 0) {
             return false;
         }
         
