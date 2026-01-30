@@ -107,4 +107,263 @@ class DecideTest {
         String launch = decide.DECIDE(points.length, points, params, lcm, puv);
         assertEquals("NO", launch);
     }
+
+    /**
+     * Negative test: NUMPOINTS below valid range should trigger assertion.
+     * NUMPOINTS = 1 (minimum is 2).
+     * Expected: AssertionError thrown 1 < 2.
+     */
+    @Test
+    void decide_numPointsTooSmall_throwsAssertionError() {
+        Decide decide = new Decide();
+
+        Point[] points = { new Point(0, 0) };
+        boolean[] puv = new boolean[15];
+        Connector[][] lcm = lcmAllNotUsed();
+
+        assertThrows(AssertionError.class, () -> {
+            decide.DECIDE(1, points, paramsWithLength1(1.0), lcm, puv);
+        });
+    }
+
+    /**
+     * Negative test: NUMPOINTS above valid range should trigger assertion.
+     * NUMPOINTS = 101 (maximum is 100).
+     * Expected: AssertionError thrown 101 > 100.
+     */
+    @Test
+    void decide_numPointsTooLarge_throwsAssertionError() {
+        Decide decide = new Decide();
+
+        Point[] points = new Point[101];
+        for (int i = 0; i < 101; i++) {
+            points[i] = new Point(0, 0);
+        }
+        boolean[] puv = new boolean[15];
+        Connector[][] lcm = lcmAllNotUsed();
+
+        assertThrows(AssertionError.class, () -> {
+            decide.DECIDE(101, points, paramsWithLength1(1.0), lcm, puv);
+        });
+    }
+
+    /**
+     * Negative test: Null POINTS array should trigger assertion.
+     * POINTS = null.
+     * Expected: AssertionError thrown.
+     */
+    @Test
+    void decide_pointsArrayNull_throwsAssertionError() {
+        Decide decide = new Decide();
+
+        boolean[] puv = new boolean[15];
+        Connector[][] lcm = lcmAllNotUsed();
+
+        assertThrows(AssertionError.class, () -> {
+            decide.DECIDE(2, null, paramsWithLength1(1.0), lcm, puv);
+        });
+    }
+
+    /**
+     * Negative test: POINTS length mismatch should trigger assertion.
+     * NUMPOINTS = 3 but POINTS.length = 2.
+     * Expected: AssertionError thrown 3 != 2.
+     */
+    @Test
+    void decide_pointsLengthMismatch_throwsAssertionError() {
+        Decide decide = new Decide();
+
+        Point[] points = { new Point(0, 0), new Point(1, 1) };
+        boolean[] puv = new boolean[15];
+        Connector[][] lcm = lcmAllNotUsed();
+
+        assertThrows(AssertionError.class, () -> {
+            decide.DECIDE(3, points, paramsWithLength1(1.0), lcm, puv);
+        });
+    }
+
+    /**
+     * Negative test: Null element in POINTS array should trigger assertion.
+     * POINTS[1] = null.
+     * Expected: AssertionError thrown.
+     */
+    @Test
+    void decide_pointElementNull_throwsAssertionError() {
+        Decide decide = new Decide();
+
+        Point[] points = { new Point(0, 0), null, new Point(1,3) };
+        boolean[] puv = new boolean[15];
+        Connector[][] lcm = lcmAllNotUsed();
+
+        assertThrows(AssertionError.class, () -> {
+            decide.DECIDE(3, points, paramsWithLength1(1.0), lcm, puv);
+        });
+    }
+
+    /**
+     * Negative test: Null PARAMETERS should trigger assertion.
+     * PARAMETERS = null.
+     * Expected: AssertionError thrown.
+     */
+    @Test
+    void decide_parametersNull_throwsAssertionError() {
+        Decide decide = new Decide();
+
+        Point[] points = { new Point(0, 0), new Point(1, 1) };
+        boolean[] puv = new boolean[15];
+        Connector[][] lcm = lcmAllNotUsed();
+
+        assertThrows(AssertionError.class, () -> {
+            decide.DECIDE(2, points, null, lcm, puv);
+        });
+    }
+
+    /**
+     * Negative test: Null LCM matrix should trigger assertion.
+     * LCM = null.
+     * Expected: AssertionError thrown.
+     */
+    @Test
+    void decide_lcmNull_throwsAssertionError() {
+        Decide decide = new Decide();
+
+        Point[] points = { new Point(0, 0), new Point(1, 1) };
+        boolean[] puv = new boolean[15];
+
+        assertThrows(AssertionError.class, () -> {
+            decide.DECIDE(2, points, paramsWithLength1(1.0), null, puv);
+        });
+    }
+
+    /**
+     * Negative test: LCM with incorrect row count should trigger assertion.
+     * LCM has 14 rows (required to be 15).
+     * Expected: AssertionError thrown.
+     */
+    @Test
+    void decide_lcmWrongRowCount_throwsAssertionError() {
+        Decide decide = new Decide();
+
+        Point[] points = { new Point(0, 0), new Point(1, 1) };
+        boolean[] puv = new boolean[15];
+        Connector[][] lcm = new Connector[14][15]; 
+
+        assertThrows(AssertionError.class, () -> {
+            decide.DECIDE(2, points, paramsWithLength1(1.0), lcm, puv);
+        });
+    }
+
+    /**
+     * Negative test: Null row in LCM matrix should trigger assertion.
+     * LCM[0] = null.
+     * Expected: AssertionError thrown.
+     */
+    @Test
+    void decide_lcmRowNull_throwsAssertionError() {
+        Decide decide = new Decide();
+
+        Point[] points = { new Point(0, 0), new Point(1, 1) };
+        boolean[] puv = new boolean[15];
+        Connector[][] lcm = new Connector[15][15];
+        lcm[0] = null; 
+
+        assertThrows(AssertionError.class, () -> {
+            decide.DECIDE(2, points, paramsWithLength1(1.0), lcm, puv);
+        });
+    }
+
+    /**
+     * Negative test: LCM rows with incorrect column count should trigger assertion.
+     * Each LCM row has 14 columns (required to be 15).
+     * Expected: AssertionError thrown.
+     */
+    @Test
+    void decide_lcmWrongColumnCount_throwsAssertionError() {
+        Decide decide = new Decide();
+
+        Point[] points = { new Point(0, 0), new Point(1, 1) };
+        boolean[] puv = new boolean[15];
+        Connector[][] lcm = new Connector[15][];
+        for (int i = 0; i < 15; i++) {
+            lcm[i] = new Connector[14]; 
+        }
+
+        assertThrows(AssertionError.class, () -> {
+            decide.DECIDE(2, points, paramsWithLength1(1.0), lcm, puv);
+        });
+    }
+
+    /**
+     * Negative test: Null element in LCM matrix should trigger assertion.
+     * LCM[0][0] = null.
+     * Expected: AssertionError thrown.
+     */
+    @Test
+    void decide_lcmElementNull_throwsAssertionError() {
+        Decide decide = new Decide();
+
+        Point[] points = { new Point(0, 0), new Point(1, 1) };
+        boolean[] puv = new boolean[15];
+        Connector[][] lcm = lcmAllNotUsed();
+        lcm[0][0] = null;
+
+        assertThrows(AssertionError.class, () -> {
+            decide.DECIDE(2, points, paramsWithLength1(1.0), lcm, puv);
+        });
+    }
+
+    /**
+     * Negative test: None symmetric LCM matrix should trigger assertion.
+     * LCM[0][1] = ANDD but LCM[1][0] = ORR (must be symmetric).
+     * Expected: AssertionError thrown.
+     */
+    @Test
+    void decide_lcmNotSymmetrical_throwsAssertionError() {
+        Decide decide = new Decide();
+
+        Point[] points = { new Point(0, 0), new Point(1, 1) };
+        boolean[] puv = new boolean[15];
+        Connector[][] lcm = lcmAllNotUsed();
+        lcm[0][1] = Connector.ANDD;
+        lcm[1][0] = Connector.ORR; 
+
+        assertThrows(AssertionError.class, () -> {
+            decide.DECIDE(2, points, paramsWithLength1(1.0), lcm, puv);
+        });
+    }
+
+    /**
+     * Negative test: Null PUV array should trigger assertion.
+     * PUV = null.
+     * Expected: AssertionError thrown.
+     */
+    @Test
+    void decide_puvNull_throwsAssertionError() {
+        Decide decide = new Decide();
+
+        Point[] points = { new Point(0, 0), new Point(1, 1) };
+        Connector[][] lcm = lcmAllNotUsed();
+
+        assertThrows(AssertionError.class, () -> {
+            decide.DECIDE(2, points, paramsWithLength1(1.0), lcm, null);
+        });
+    }
+
+    /**
+     * Negative test: PUV with incorrect length should trigger assertion.
+     * PUV.length = 14 (required to be 15).
+     * Expected: AssertionError thrown.
+     */
+    @Test
+    void decide_puvWrongLength_throwsAssertionError() {
+        Decide decide = new Decide();
+
+        Point[] points = { new Point(0, 0), new Point(1, 1) };
+        boolean[] puv = new boolean[14]; // Wrong length
+        Connector[][] lcm = lcmAllNotUsed();
+
+        assertThrows(AssertionError.class, () -> {
+            decide.DECIDE(2, points, paramsWithLength1(1.0), lcm, puv);
+        });
+    }
 }
