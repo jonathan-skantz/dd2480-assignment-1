@@ -23,7 +23,7 @@ public class CMV {
         cmv[9] = lic9(points, parameters.C_PTS, parameters.D_PTS, parameters.EPSILON);
         cmv[10] = lic10(points, parameters.E_PTS, parameters.F_PTS, parameters.AREA1);
         cmv[11] = lic11(points, parameters.G_PTS);
-        cmv[12] = lic12();
+        cmv[12] = lic12(points, parameters.K_PTS, parameters.LENGTH1, parameters.LENGTH2);
         cmv[13] = lic13(points, parameters.A_PTS, parameters.B_PTS, parameters.RADIUS1, parameters.RADIUS2);
         cmv[14] = lic14(points, parameters.E_PTS, parameters.F_PTS, parameters.AREA1, parameters.AREA2);
 
@@ -458,7 +458,37 @@ public class CMV {
         return false;
     }
 
-    public static boolean lic12() {return false;}
+    /**
+     * LIC 12: distance > LENGTH1 for two data points separated by exactly K_PTS and distance > LENGTH2 for two other
+     * (or the same) data points separated also by exactly K_PTS
+     * @param points Array of planar points (≥5 points required)
+     * @param K_PTS The number of consecutive intervening points between the two data points considered for distance checks
+     * @param LENGTH1 The threshold distance for the first part of the condition
+     * @param LENGTH2 The threshold distance for the second part of the condition
+     * @return true if condition is met
+     */
+    public static Boolean lic12(Point[] points, int K_PTS, double LENGTH1, double LENGTH2) {
+        int i = 0;
+        boolean condition_1 = false;
+        boolean condition_2 = false;
+        if(points.length < 3) {return false;}
+
+        for (Point A : points) {
+            if(i + K_PTS + 1 >= points.length) {
+                break;
+            }
+            Point B = points[i + K_PTS + 1];
+            double distance = A.distance(B);
+            if(distance > LENGTH1) {
+                condition_1 = true;
+            }
+            if(distance < LENGTH2) {
+                condition_2 = true;
+            }
+            i += 1;
+        }
+        return condition_1 && condition_2;
+    }
     
     /**
      * Checks if there exists at least one set of three data points, separated by exactly {@code A_PTS} 
