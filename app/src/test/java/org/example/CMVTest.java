@@ -577,9 +577,13 @@ class CMVTest {
         assertFalse(CMV.lic7(points, 1, -1.0));
     }
 
-
+    /**
+     * Negative test: lic9 should return false when NUMPOINTS < 5.
+     * Test case: 4 points.
+     * Expected: false.
+     */
     @Test
-    void lic9_enoughPoint_returnsFalse() {
+    void lic9_lessThanFivePoints_returnsFalse() {
         Point[] points = {
                 new Point(0,0),
                 new Point(1, 0),
@@ -594,6 +598,12 @@ class CMVTest {
         assertFalse(CMV.lic9(points, C_PTS, D_PTS, EPSILON));
     }
 
+
+    /**
+     * Negative test: lic9 returns false when the first or last point coincides with the vertex.
+     * Test case: vertex coincides with last point.
+     * Expected: false.
+     */
     @Test
     void lic9_coincideWithVertex_returnsFalse() {
         Point[] points = {
@@ -611,7 +621,12 @@ class CMVTest {
         assertFalse(CMV.lic9(points, C_PTS, D_PTS, EPSILON));
     }
 
-
+    /**
+     * Positive test: lic9 returns true when there exists three points separated by
+     * exactly C_PTS and D_PTS intervening points forming angle < (PI - EPSILON) or > (PI + EPSILON).
+     * Test case: Points forming a right angle
+     * Expected: true.
+     */
     @Test
     void lic9_conditionsMet_returnsTrue() {
         Point[] points = {
