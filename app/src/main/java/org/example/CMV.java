@@ -401,10 +401,12 @@ public class CMV {
      * @return true if condition is met
      */
     public static Boolean lic12(Point[] points, int K_PTS, double LENGTH1, double LENGTH2) {
-        int i = 0;
+        if(0 > LENGTH2) {return false;}
+        if(0 > LENGTH1) {return false;}
+        if(points.length < 3) {return false;}
         boolean condition_1 = false;
         boolean condition_2 = false;
-        if(points.length < 3) {return false;}
+        int i = 0;
 
         for (Point A : points) {
             if(i + K_PTS + 1 >= points.length) {
